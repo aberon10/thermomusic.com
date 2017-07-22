@@ -1,0 +1,77 @@
+.menu {
+	overflow: hidden;
+	margin-bottom: 1rem;
+
+	ul {
+		display: block;
+		list-style-type: none;
+	}
+	
+	.menu-link {
+		position: relative;
+		display: block;
+		padding: .5rem;		
+		color: #fff;
+		font-size: .9rem;
+		font-weight: $normal;
+		font-family: 'Oswald', 'Roboto', Verdana, Arial, sans-serif;
+		letter-spacing: 1px;
+		text-transform: uppercase;
+
+		&:hover,
+		&.menu-link__active {
+			background-color: $alice-dark;
+			@include from(web) {
+				background-color: transparent;
+				color: $alice-dark;
+				&::before {
+					width: 0;
+				}
+			}
+		}
+
+		@include from(web) {
+			&::before {
+				content: '';
+				height: 4px;
+				width: 0;
+				display: block;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				transition: all .3s;
+				background-color: $alice-dark;
+			}
+		}
+	}
+
+	@include from(web) {
+		margin-bottom: 0;
+		padding: .5rem;
+
+		ul {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+		.menu-item {
+			margin-left: 1rem;
+		}
+
+		.menu-link {
+			color: $gray;
+		}
+	}
+}
+
+.bars-menu {
+    color: $alice-dark;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+
+    @include from(web) {
+    	display: none;
+    }
+}

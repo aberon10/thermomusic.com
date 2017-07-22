@@ -1,0 +1,110 @@
+.form {
+    display: block;
+    width: 100%;
+    margin: 4rem auto;
+    max-width: 960px;
+}
+
+.input-group {
+    margin-bottom: 2rem;
+    position: relative;
+    i[class^="icon"] {
+        position: absolute;
+        top: 4px;
+        right: 10px;
+        font-size: 1.3em;
+    }
+    
+    /*
+    &::before {
+        content: '\78';
+        position: absolute;
+        top: 3rem;
+        right: 1rem;
+        display: none;
+        font-family: "iconos";
+        text-align: center;
+        color: $body--color;
+        background-color: transparent;
+    }*/
+}
+
+.has-error {
+    .form-control {
+        border-color: $red;
+    }
+
+    .form-label {
+        color: $red;
+    }
+
+    /*&::before {
+        display: block;
+        color: $red;
+    }*/
+}
+
+.error-message {
+    color: $red;
+    text-align: left;
+    padding-top: .5rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 4px 30px 4px 10px;
+    transition: all 0.3s ease;
+    color: $body--color;
+    border: 1px solid $gray;
+    outline: none;
+    font-family: $body--font-family, Helvetica, Arial;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    border-radius: 4px;
+    background-color: lighten($light-gray, 10%);
+
+    &::placeholder {
+        color: #999;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+        transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
+    }
+
+    &:focus {
+        background: #fff;
+        border-color: $light-blue;
+    }
+}
+
+.form-label {
+    display: block;
+    width: 100%;
+    padding-bottom: 1rem;
+    text-align: left;
+}
+
+select.select {
+    margin-right: 1rem;
+    padding: 4px 30px 4px 10px;
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
+
+.select-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+textarea {
+    resize: vertical; 
+    min-height: 150px;
+}

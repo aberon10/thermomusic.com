@@ -1,0 +1,15 @@
+node_modules/
+
+public/storage
+
+TODO
+user_guide.txt
+
+.jshintrc
+.tern-project
+.editorconfig
+.phpintel/
+.db_config.ini
+public/images/artists/
+
+resources/src/scss/providers/

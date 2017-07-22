@@ -1,0 +1,89 @@
+.button-dialog {
+    border-radius: 2px;
+    color: #333;
+    text-shadow: 0 -1 0 lighten(#F5F5F5, 3%);
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.button-disabled {
+    color: #F7F7F7;
+    width: 100%;
+    display: block;
+    background: #CCC;
+    margin: 1em 0;
+    outline: none;
+    border: none;
+    &:hover {
+        background: #C2C2C2;
+    }
+}
+
+.button-float {
+    position: absolute;
+    top: 10%;
+    right: 2%;
+    &.button-red {
+        background: transparent;
+        &:hover {
+            background: darken($error, 6%);
+        }
+    }
+}
+
+.button-red {
+    background: $error;
+    &:hover {
+        background: darken($error, 6%);
+    }
+}
+
+.button-blue {
+    background: $light-blue;
+    width: 100%;
+    display: block;
+    margin: 1em 0;
+    border: none;
+    &:hover {
+        background: darken($light-blue, 8%);
+    }
+}
+
+.button-gray {
+    background: darken($gray, 8%);
+    &:hover {
+        background: darken($gray, 10%);
+    }
+}
+
+.modal-dialog {
+    position: fixed;
+    z-index: 10000;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(#121314, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0);
+    transition: transform 0.3s background-color 0.6s;
+    &.show {
+        transform: scale(1);
+    }
+}
+
+.dialog {
+    transform: scale(0);
+    transition: transform 0.3s;
+    &.show-dialog {
+        transform: scale(1);
+    }
+    &.dark {
+        .container-form {
+            background: #1c1c1f !important;
+            border: 1px solid #121314;
+        }
+    }
+}

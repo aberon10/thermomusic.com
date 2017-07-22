@@ -1,0 +1,164 @@
+.main {
+	position: relative;
+	z-index: 1000;
+	background-color: #fff;
+}
+
+/**
+ * feactures ThermoMusic
+ */
+.feactures-app {
+	margin-bottom: 1rem;
+	padding: 0 1rem;
+	background-color: #fff;
+	@include from(web) {
+		padding: 0 2.5rem;
+	}
+}
+.feactures-app__header {
+	padding: 1rem 0;	
+}
+
+.feactures-app__body {
+	.feacture-description {
+		padding: .5rem 0;
+	}
+
+	.feacture-title {
+		text-align: left;
+	}
+}
+
+.feactures {
+	padding: 0 0 1rem;
+	@include from(web) {
+		padding: 0 2rem 0 0;
+	}
+}
+
+.feactures-image {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/**
+ * advertising
+ */
+.advertising {
+	@include from(tablet) {
+		max-height: 400px;
+		overflow: hidden;
+	}	
+
+	@include from(tablet) {
+		max-height: 600px;
+	}
+	.advertising-message {
+		background-color: transparent;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1000;
+		width: 100%;
+		padding-bottom: 1rem;
+		p {
+			font-size: 3.5vw;
+			font-weight: $normal;
+			font-family: 'Raleway', Arial, sans-serif;
+			@include from(tablet) {
+				font-size: 2vw;	
+			}
+			@include from(web) {
+				font-size: 1.2vw;	
+			}
+		}
+		.button {
+			display: block;
+    		width: 100%;
+		}
+		@include from(tablet) {
+			top: 6rem;
+			h1 {
+				font-size: 4vw; 
+			}	
+		}
+		@include from(web) {
+			top: 10rem;
+			h1 {
+				font-size: 4vw; 
+			}	
+
+			.buttons-group {
+				justify-content: center;
+			}
+		}
+	}
+}
+
+/**
+ * artists exclusives
+ */
+.main-artists {
+	position: relative;
+	width: 100%;
+	padding-top: 1rem;
+	background-color: #fff;
+}
+
+.main-artists__header {
+	padding: 1rem 0;
+	h3 {
+		@include from(tablet) {
+			font-size: 2rem;
+		}
+	}
+}
+
+.main-artists__body {
+    @include grid(div, 1);
+	@include from(768px) {
+        @include grid(div, 2);
+    }
+    @include from(web) {
+        @include grid(div, 3);
+    }
+}
+
+.main-artist {
+	padding: 1rem 0;
+	@include from(web) {
+		padding: 0;
+	}
+}
+.main-artist__description {
+	h5 {
+		padding-bottom: .5rem;
+		font-size: 1.3rem;
+		@include from(tablet) {
+			font-size: 1.5rem;
+		}
+	}
+}
+
+/**
+ * about us
+ */
+.aboutus {
+	padding: 1rem 0;
+}
+
+.aboutus-work__title {
+	h2 {
+		font-size: 2.2rem;
+		text-align: left;
+	}
+}
+
+.aboutus-work__description {
+	margin-bottom: 1rem;
+	a {
+		color: $alice-dark;
+		font-weight: $semi-bold;
+	}
+}

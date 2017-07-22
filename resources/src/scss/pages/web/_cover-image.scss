@@ -1,0 +1,138 @@
+.cover-image {
+	position: relative;
+}
+
+.cover-image__big {
+	min-height: 350px;
+	max-height: 350px;
+	background: #fff url('../images/cover-images/cover-image-home.jpg') no-repeat center;
+	background-size: cover;
+
+	@include from(movil) {
+	 	max-height: 450px;
+	 	.cover-image__message {
+	 		top: 12vh;
+	 	}
+	}
+
+	@include from(tablet) {
+		min-height: 450px;
+	 	max-height: 650px;
+		.cover-image__message {
+	 		top: 8vh;
+	 	}	 	
+	}
+
+	@include from(web) {
+		.cover-image__message {
+	 		top: 6vh;
+	 	}
+	}
+}
+
+.cover-image__small {
+	min-height: 350px;
+	background: #fff url('../images/cover-images/cover-image-home.jpg') no-repeat center;
+	background-size: cover;
+	.cover-image__message {
+		top: 20vh;
+
+		h1 {
+			font-size: 10vw;
+		}
+
+		@include from(movil) {
+			h1 {
+				font-size: 8vw;
+			}
+		}
+
+		@include from(tablet) {
+		 	top: 12vh;
+		 	h1 {
+				font-size: 5vw;
+			}
+		}
+	}
+}
+
+.cover-image__message {
+	position: absolute;
+	top: 15vh;
+	width: 100%;	
+
+	h1, p {
+		text-align: center;
+		margin: 2rem 0;
+		color: #fff;
+		font-family: 'Oswald', 'Roboto', Verdana, Arial, sans-serif;
+	}
+
+	h1 {
+		text-transform: uppercase;
+		font-size: 6vw;
+	}	
+
+	h1 span {
+		display: block;
+		font-size: 2.5vw;
+	}
+
+	p {	
+		font-size: 2.5vw;
+	}
+
+	@include from(tablet) {
+		top: 20vh;
+
+		h1 {
+			margin: 4rem 0;
+		}
+
+		h1 span {
+			font-size: 2vw;
+		}
+
+		p {
+			display: block;
+			font-size: 1.5vw;
+		}
+	}	
+}
+
+#cover-image-home {
+	background: #fff url('../images/cover-images/cover-image-home.jpg') no-repeat center;
+}
+
+#cover-image-aboutus {
+	background: #fff url('../images/cover-images/cover-image-aboutus.jpeg') no-repeat center;
+}
+
+#cover-image-offers {
+	background: #fff url('../images/cover-images/cover-image-offers.jpeg') no-repeat center;	
+}
+
+#cover-image-help {
+	background: #fff url('../images/cover-images/cover-image-help.jpg') no-repeat center;
+}
+
+#home-advertising {
+	background: #fff url('../images/cover-images/mujer-escuchando-musica_2.jpg') no-repeat center;
+	.cover-image__message {
+		top: 12vh;
+		@include from(movil) {
+		 	top: 10vh;
+		}
+	}
+}
+
+#footer-advertising {
+	min-height: 450px;
+	background: #fff url('../images/cover-images/footer-advertising.jpeg') no-repeat center;
+	.cover-image__message {
+		top: 12vh;
+		@include from(movil) {
+		 	top: 10vh;
+		}
+	}
+}

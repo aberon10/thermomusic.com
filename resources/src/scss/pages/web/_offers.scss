@@ -1,0 +1,117 @@
+.offers-container {
+	display: block;
+    width: 100%;
+    margin: 4rem auto;
+    padding: 0;
+    max-width: 960px;
+    font-family: 'Roboto', 'Raleway', Arial,  Helvetica, sans-serif, Verdana;
+}
+
+.pricing-table {
+	box-shadow: 0 4px 6px $gray;
+	.pricing-list {
+       list-style: none;
+	}
+
+	.pricing-list__item {
+        padding: .5rem 0;
+        font-size: 1.1rem;
+        font-weight: $light;
+
+        span {
+            font-weight: 400;
+            &.unlimited {
+                padding: .4rem .8rem;
+                color: #FFF;
+                border-radius: 8px;
+                background-color: lighten($light-blue, 8%);
+            }
+        }
+        &:nth-child(2n) {
+            background: #f3f3f3;
+        }
+    }
+}
+
+/* header */
+.pricing-title {
+    padding: 1.2rem 0;
+    color: $gray;
+    background-color: darken(#ebebeb, 5%);
+    text-transform: uppercase;
+    text-shadow: 0 0 2px 1px $gray;
+}
+
+.pricing-table__premium .pricing-title {
+    position: relative;
+	color: #fff;
+	background-color: darken($alice-dark, 5%);
+	
+	&::before,
+	&::after {
+		content: '';
+		position: absolute;
+		top: 3em;
+        left: -10px;
+	}
+
+    &::before {
+        content: 'recomendado';
+        position: absolute;
+        z-index: 5000;
+        top: 3.5rem;
+        left: -10px;
+        display: inline-block;
+        padding: 10px 8px;
+		border-radius: 0 50px 50px 0;
+        background-color: $yellow;
+        box-shadow: 0 4px 6px rgba(#000, 0.4);
+        font-size: 1rem;
+    }
+
+    &::after {
+        z-index: -1;
+        width: 0;
+        height: 0;
+		border-top: 10px solid darken($yellow, 20%);
+        border-left: 20px solid transparent;
+    }
+}
+
+.table-price {
+    padding: 20px 0;
+    color: #fff;
+    background: $black;
+    font-size: 1.5rem;
+    font-weight: $bold;
+    sup {
+        font-size: .9rem;
+    }
+}
+
+/* footer */
+// buttons
+.table-buy {
+    display: flex;
+	justify-content: space-between;
+    padding: 1rem;
+    background: #fff;
+
+    span {
+        text-align: left;
+		font-size: 1.4rem;
+        font-weight: $semi-bold;
+
+        sup {
+            font-size: .9rem;
+     	}
+    }
+
+    .pricing-table__button {
+        padding: .8rem 1rem;
+		transition: all .3s ease;
+        text-align: center;
+		color: #fff;
+		font-size: 1.2rem;		
+    }
+}

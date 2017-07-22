@@ -1,0 +1,56 @@
+// paleta de colores para la aplicación
+$blue: #0F7CFF;
+$dark-blue: #061d2f;
+$light-blue: #00afef;
+$alice-dark: lighten(#1287A8, 5%);
+$alice-blue: lighten(#00f0ff, 5%);
+
+// colores
+$white: #FFFFFF;
+$black: #000000;
+$gray: #8B939E;
+$light-gray: #d8d5d5;
+$red: #ed2553;
+$yellow: #F9A825;
+
+// colores de redes sociales
+$facebook: #3A5795;
+$google: #d73d32;
+$twitter: #32CBFE;
+$instagram: #c08d64;
+$youtube: #b31217;
+
+.blue {
+    background-color: $blue;
+}
+
+.bg-alice-dark {
+    background-color: $alice-dark;
+}
+
+.bg-black {
+    background-color: $black;
+}
+
+.bg-facebook {
+    background-color: $facebook;
+    &:hover {
+        background-color: darken($facebook, 10%);
+    }
+}
+
+.bg-google {
+    background-color: $google;
+    &:hover {
+        background-color: darken($google, 10%);
+    }
+}
+
+/*
+	FONDOS 
+	background-image: linear-gradient(rgb(18, 18, 18), rgb(7, 7, 7) 85%);
+	background-image: linear-gradient(rgb(37, 33, 49), rgb(7, 6, 9) 85%);
+	background-image: linear-gradient(rgb(53, 81, 100), rgb(5, 8, 10) 85%);
+    background-image: linear-gradient(rgb(48, 67, 105), rgb(4, 6, 10) 85%);
+
+ */

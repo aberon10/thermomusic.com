@@ -1,0 +1,64 @@
+.container-tabs {
+    width: 100%;
+    margin: 0 auto;
+    padding-bottom: 1em;
+    background: #1c1c1f;
+    border: 1px solid rgba(#121314, 0.4);
+    @include from(tablet) {
+        width: 90%;
+    }
+    @include from(web) {
+        width: 80%;
+    }
+    .container-form__content {
+        display: none;
+        width: 95%;
+        margin: 0 auto;
+        @include from(tablet) {
+            width: 90%;
+        }
+        @include from(web) {
+            width: 80%;
+        }
+        &.show-content-tab {
+            display: block;
+        }
+    }
+    input[type='text'],
+    input[type='password'],
+    select {
+        border: 1px solid $light-gray;
+    }
+}
+
+.menu-tab {
+    list-style: none;
+    @include grid(li, 1);
+    @include from(tablet) {
+        @include grid(li, 3, 0.5em);
+    }
+    &__item {
+        transition: all 0.3s;
+        border-bottom: 4px solid $light-gray !important;
+        &:hover {
+            border-bottom-color: $light-blue !important;
+        }
+        &.active-tab {
+            border-bottom-color: $light-blue !important;
+        }
+    }
+    .tab-link {
+        display: block;
+        padding: 1em;
+        transition: all 0.3s;
+        text-align: left;
+        color: $light-blue;
+        line-height: 1em;
+        &:active {
+            transform: scale(.95);
+        }
+        i {
+            float: right;
+        }
+    }
+}
