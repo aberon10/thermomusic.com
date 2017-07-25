@@ -23,3 +23,10 @@
 .no-margin {
 	margin: 0;
 }
+
+.center {
+    display: block;
+    clear: both;
+    margin-right: auto !important;
+    margin-left: auto !important;
+}

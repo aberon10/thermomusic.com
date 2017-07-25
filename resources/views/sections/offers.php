@@ -15,7 +15,7 @@
 			    	<div class="boxed  offers-container">
 			    		<div class="ed-container  full">
 			    			<!-- package free -->
-                            <div class="ed-item  movil-100  tablet-50" id="table-free" style="display: none;">
+                            <div class="ed-item  movil-100  tablet-50" id="table-free">
                                 <div class="pricing-table  pricing-table__free">
                                 	<div class="pricing-table__header">
                                     	<h1 class="pricing-title">Free</h1>
@@ -43,13 +43,13 @@
                             </div>
 
                             <!-- FORM SUBSCRIPTION PREMIUM -->
-                            <div class="ed-item  movil-100  tablet-50">
+                            <div class="ed-item  movil-100  tablet-50" style="display: none;">
 								<div class="form">
 									<form name="form-subscription" id="form-subscription" action="#" method="POST">
-										<div class="input-group  has-error">
+										<div class="input-group">
 											<label class="form-label" for="user">Usuario</label>
 											<input type="text" class="form-control" id="user" name="user">
-											<div class="error-message">User is not valid</div>
+											<div class="error-message"></div>
 										</div>
                                         <div class="input-group">
 											<label class="form-label" for="number-card">Número de tarjeta</label>

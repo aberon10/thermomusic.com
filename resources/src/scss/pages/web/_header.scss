@@ -13,6 +13,22 @@
 	}
 }
 
+.header-secondary {
+	padding: 1rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	@include from(web) {
+		padding: 1rem 0 0 2rem;
+		justify-content: flex-start;
+	}
+
+	.logo a {
+		font-size: 3rem;
+		color: #fff;
+	}
+}
+
 .header-top {	
 	.buttons-group:last-child {
 		padding-top: 0;

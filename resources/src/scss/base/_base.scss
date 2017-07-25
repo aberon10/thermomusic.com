@@ -4,7 +4,6 @@ html {
     font-size: 14px;
     text-align: center;
     color: #FFF;
-    background-color: #FFF;
 }
 
 *,
@@ -21,11 +20,13 @@ body {
 }
 
 body {
+    position: relative;
     width: 100%;
     color: $body--color;
     font-family: $body--font-family;
     font-size: 1rem;
     line-height: 1.5;
+    background-color: #fff;
     /* scrollbar */
     &::-webkit-scrollbar {
         width: 6px;

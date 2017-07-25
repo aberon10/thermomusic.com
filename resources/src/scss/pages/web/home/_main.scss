@@ -4,6 +4,11 @@
 	background-color: #fff;
 }
 
+.main-wrapper {
+	position: relative;
+	padding-bottom: 60px;
+}
+
 /**
  * feactures ThermoMusic
  */
@@ -160,5 +165,44 @@
 	a {
 		color: $alice-dark;
 		font-weight: $semi-bold;
+	}
+}
+
+// login - register
+.index-wrapper {
+	@include from(web) {
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+		margin: 0 2rem;
+	}
+}
+
+.index-wrapper__left, 
+.index-wrapper__right { 
+	display: flex;
+	justify-content: center;
+	padding: 1rem;
+}
+
+.index-heading-1,
+.index-heading-2,
+.index-heading-3,
+.index-heading-4,
+.index-heading-5,
+.index-heading-6 {
+	color: #fff;
+}
+.index-heading-1 {
+	font-size: 8vw;
+	@include from(web) {
+		font-size: 4vw;
+	}
+}
+
+.index-heading-3 {
+	font-size: 4vw;
+	@include from(web) {
+		font-size: 2vw;
 	}
 }

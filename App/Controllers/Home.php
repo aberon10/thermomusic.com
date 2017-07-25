@@ -8,8 +8,8 @@ use Core\Controller;
 class Home extends Controller
 {
 	public static function index() {
-		View::setData('title', APP_NAME.' | Home');
 		try {
+			View::setData('title', APP_NAME.' | Home');
 			View::render('sections/home');
 		} catch (\Exception $e) {
 			exit($e->getMessage());
@@ -17,8 +17,8 @@ class Home extends Controller
 	}
 
 	public static function aboutus() {
-		View::setData('title', APP_NAME.' | Empresa');
 		try {
+			View::setData('title', APP_NAME.' | Empresa');
 			View::render('sections/aboutus');
 		} catch (\Exception $e) {
 			exit($e->getMessage());
@@ -26,8 +26,8 @@ class Home extends Controller
 	}	
 
 	public static function offers() {
-		View::setData('title', APP_NAME.' | Ofertas');
 		try {
+			View::setData('title', APP_NAME.' | Ofertas');
 			View::render('sections/offers');
 		} catch (\Exception $e) {
 			exit($e->getMessage());
@@ -35,8 +35,8 @@ class Home extends Controller
 	}
 
 	public static function support() {
-		View::setData('title', APP_NAME.' | Soporte');
 		try {
+			View::setData('title', APP_NAME.' | Soporte');
 			View::render('sections/support');
 		} catch (\Exception $e) {
 			exit($e->getMessage());
@@ -44,9 +44,27 @@ class Home extends Controller
 	}	
 
 	public static function help() {
-		View::setData('title', APP_NAME.' | Ayuda');
 		try {
+			View::setData('title', APP_NAME.' | Ayuda');
 			View::render('sections/help');
+		} catch (\Exception $e) {
+			exit($e->getMessage());
+		}
+	}	
+
+	public static function login() {
+		try {
+			View::setData('title', APP_NAME.' | Iniciar sesión');
+			View::render('sections/login');
+		} catch (\Exception $e) {
+			exit($e->getMessage());
+		}
+	}		
+
+	public static function register() {
+		try {
+			View::setData('title', APP_NAME.' | Registrarse');
+			View::render('sections/register');
 		} catch (\Exception $e) {
 			exit($e->getMessage());
 		}

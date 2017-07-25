@@ -12,29 +12,34 @@
 			    </div>
 			    <main class="main">
 			    	<div class="boxed">
-			    		<div class="form">			    			
-	                        <form action="#" method="POST" id="form-support" name="form-support">
-	                        	<div class="input-group">
-	                        		<label for="support-email" class="form-label">Correo electrónico</label>
-	                        		<input type="text" class="form-control" name="support-email" id="support-email">
-	                        	</div>
-	                        	<div class="input-group">
-	                        		<label for="support-name" class="form-label">Nombre</label>
-	                        		<input type="text" class="form-control" name="support-name" id="support-name">
-	                        	</div>
-	                        	<div class="input-group">
-	                        		<label for="support-subject" class="form-label">Asunto</label>
-	                        		<input type="text" class="form-control" name="support-subject" id="support-subject">
-	                        	</div>
-	                        	<div class="input-group">
-	                        		<label for="support-message" class="form-label">¿Cuál es tu mensaje?</label>
-	                        		<textarea class="form-control" name="support-message" id="support-message">
-	                        		</textarea>
-	                        	</div>
-	                        	<div class="input-group">
-	                        		<button type="submit" class="button  button-big  button-cyan" name="suport-button" id="suport-button">Enviar</button>
-	                        	</div>
-	                        </form>
+			    		<div class="panel">			    			
+	                        <div class="panel-header">
+	                        	<h2 class="panel-header__title">Contacto</h2>
+	                        </div>
+	                        <div class="panel-body">
+	                        	<form action="#" method="POST" id="form-support" name="form-support">
+		                        	<div class="input-group">
+		                        		<label for="support-email" class="form-label">Correo electrónico</label>
+		                        		<input type="text" class="form-control" name="support-email" id="support-email">
+		                        	</div>
+		                        	<div class="input-group">
+		                        		<label for="support-name" class="form-label">Nombre</label>
+		                        		<input type="text" class="form-control" name="support-name" id="support-name">
+		                        	</div>
+		                        	<div class="input-group">
+		                        		<label for="support-subject" class="form-label">Asunto</label>
+		                        		<input type="text" class="form-control" name="support-subject" id="support-subject">
+		                        	</div>
+		                        	<div class="input-group">
+		                        		<label for="support-message" class="form-label">¿Cuál es tu mensaje?</label>
+		                        		<textarea class="form-control" name="support-message" id="support-message">
+		                        		</textarea>
+		                        	</div>
+		                        	<div class="input-group">
+		                        		<button type="submit" class="button  button-big  button-cyan" name="suport-button" id="suport-button">Enviar</button>
+		                        	</div>
+		                        </form>
+	                        </div>
 			    		</div>
                     </div>
 			    </main>

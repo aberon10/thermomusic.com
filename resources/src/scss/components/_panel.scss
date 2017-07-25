@@ -1,0 +1,35 @@
+.panel {
+	margin: 2rem auto;
+	padding: 1rem 2rem;
+	max-width: 750px;
+	background-color: #fff;
+	border-radius: 3px;
+
+	@include from(tablet) {
+		margin: 0 auto;
+	}
+}
+
+// size panels
+.panel-small {
+	max-width: 480px;
+}
+
+.panel-big {
+	max-width: 1200px;
+}
+
+.panel-header {
+	border-radius: 3px 3px 0 0;
+	padding: 1rem 0;
+	border-bottom: 1px solid lighten($gray, 10%);	
+}
+
+.panel-header__title {
+	text-align: left;
+}
+
+.panel-body {
+	border-radius: 0 0 3px 3px;
+	padding: 1rem 0;
+}
