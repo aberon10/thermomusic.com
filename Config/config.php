@@ -1,14 +1,14 @@
 <?php
 
+namespace Config;
+
 /**
  * Configuraciones de la aplicación.
  *
- * @author Alejandro Beron <alejandroberon10@gmail.com>
+ * @author Alejandro Berón <alejandroberon10@gmail.com>
+ * @license <https://opensource.org/licenses/GPL-3.0> GNU GPL version 3
  * @version 1.0
  */
-
-// Namespace donde se guardan los controladores de la aplicación
-const NAMESPACE_CONTROLLERS = '\App\Controllers\\';
 
 // Estableze la zona horaria
 date_default_timezone_set('America/Montevideo');

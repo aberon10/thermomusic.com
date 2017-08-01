@@ -5,12 +5,12 @@ namespace Core;
 class View
 {
     /**
-     * @var array $data - Datos que serán pasados a la vista.
+     * @var array $data
      */
     protected static $data = null;
 
     /**
-     * @var string EXTENSION_TEMPLATES - Extensión de los archivos que guardan las vistas.
+     * @var string EXTENSION_TEMPLATES
      */
     const EXTENSION_TEMPLATES = 'php';
 
@@ -25,7 +25,7 @@ class View
 
     /**
      * render
-     * @param string - template name
+     * @param string - template
      */
     public static function render($template) {
         $src = VIEWS_PATH.$template.'.'.self::EXTENSION_TEMPLATES;

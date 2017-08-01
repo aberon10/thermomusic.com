@@ -3,6 +3,7 @@
 namespace App\Database;
 
 use App\Database\DBConnection;
+use \Config;
 
 class PDOConnection extends DBConnection
 {
@@ -18,11 +19,11 @@ class PDOConnection extends DBConnection
     );
 
     protected function __construct() {
-		$dsn = 'mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_DATABASE;
+		$dsn = 'mysql:host='.getenv('DB_HOST').';port='.getenv('DB_PORT').';dbname='.getenv('DB_DATABASE');
 
         try {
-            $this->connection = new \PDO($dsn, DB_USER, DB_PASSWORD, self::$options);
-            $this->connection->exec('SET CHARACTER SET '.DB_CHARSET);
+            $this->connection = new \PDO($dsn, getenv('DB_USER'), getenv('DB_PASSWORD'), self::$options);
+            $this->connection->exec('SET CHARACTER SET '.getenv('DB_CHARSET'));
         } catch (\PDOException $error) {
             exit('[ Connection error ] '.$error->getMessage().' Error code: '.$error->getCode());
         }
@@ -66,6 +67,6 @@ class PDOConnection extends DBConnection
      * @return string
      */
     public function lastInsertId() {
-            return $this->connection->lastInsertId();
+        return $this->connection->lastInsertId();
     }
 }

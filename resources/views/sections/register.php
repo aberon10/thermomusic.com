@@ -25,5 +25,9 @@
         </div>
     </div>
     <?php require VIEWS_PATH.'layouts/footer-secondary.php'; ?>
+    <script src="/js/Libs/Ajax.js"></script>
+    <script src="/js/Libs/Utilities.js"></script>
+    <script src="/js/Libs/Validate.js"></script>
+    <script src="/js/register-user.js"></script>
 </body>
 </html>

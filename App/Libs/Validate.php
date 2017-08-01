@@ -29,38 +29,46 @@ class Validate
      * @return mixed          
      */
     public static function resolver($input, array $filters) {
-    	$class = __CLASS__;
+        $class = __CLASS__;
 
-    	foreach ($filters as $key => $value) {
-    		$method = $class::METHOD_PREFIX.ucfirst($key);
-    		if (method_exists($class, $method)) {
-    			if (in_array($key, ['regex', 'min', 'max', 'length'])) {
-    				if (!is_array($value) || count($value) != 2) {
-    					throw new \Exception('El filtro '.$key.' debe tener como valor un array con la forma [valor, mensaje]');
-    				} else {
-    					$result = $class::{$method}($value[0], $input);	
-    				}
-    			} else {
-    				$result = $class::{$method}($input);
-    			}
-    			
-    			if (!$result) {
-    				return (is_array($value)) ? $value[1] : $value;
-    			}    			
-    		} else {
-    			throw new \Exception('La propiedad '.$key .' no existe');
-    		}
-    	}
+        foreach ($filters as $key => $value) {
+            $method = null;
 
-    	return true;
+            if ($key == 'min_length' || $key == 'max_length') {
+                $split_key = explode('_', $key);
+                $method = $class::METHOD_PREFIX.ucfirst($split_key[0]).ucfirst($split_key[1]); 
+            } else {
+                $method = $class::METHOD_PREFIX.ucfirst($key);
+            }
+            
+            if (method_exists($class, $method)) {
+                if (in_array($key, ['regex', 'min', 'max', 'min_length', 'max_length', 'length'])) {
+                    if (!is_array($value) || count($value) != 2) {
+                        throw new \Exception('El filtro '.$key.' debe tener como valor un array con la forma [valor, mensaje]');
+                    } else {
+                        $result = $class::{$method}($value[0], $input); 
+                    }
+                } else {
+                    $result = $class::{$method}($input);
+                }
+                
+                if (!$result) {
+                    return (is_array($value)) ? $value[1] : $value;
+                }               
+            } else {
+                throw new \Exception('La propiedad '.$key .' no existe');
+            }
+        }
+
+        return true;
     }
 
     private static function _validateRequire($value) {
-    	return empty($value) ? false : true;
+        return empty($value) ? false : true;
     }
 
     private static function _validateRegex($regex, $value) {
-    	return preg_match($regex, $value);
+        return preg_match($regex, $value);
     }
 
     /**
@@ -96,47 +104,63 @@ class Validate
      * @param  string $date   
      * @return true|false
      */
-	private static function _validateDate($date) {
-	    if (preg_match(Validate::REGX_FORMATS_OF_DATES, $date)) {
-	        $values = preg_split('[\/|-]', $date);
-	        if (checkdate((int) $values[1], (int) $values[0], (int) $values[2])) {
-	        	return true;
-	        }	            
-	    }
-	    return false;
-	}
+    private static function _validateDate($date) {
+        if (preg_match(Validate::REGX_FORMATS_OF_DATES, $date)) {
+            $values = preg_split('[\/|-]', $date);
+            if (checkdate((int) $values[1], (int) $values[0], (int) $values[2])) {
+                return true;
+            }               
+        }
+        return false;
+    }
 
-	/**
-	 * _validateMax
-	 * @param  int $max_value 
-	 * @param  int $value     
-	 * @return true|false            
-	 */
-	private static function _validateMax($max_value, $value) {
-		if (preg_match('/^[\d]+$/', (string) $value)) {
-			return ($value > $max_value) ? false : true;
-		} else if (is_string($value)) {
-			return (strlen($value) > $max_value) ? false : true;
-		}
-		return false;
-	}	
+    /**
+     * _validateMaxLength
+     * @param  int $max_value 
+     * @param  string $value     
+     * @return true|false            
+     */
+    private static function _validateMaxLength($max_value, $value) {
+        return (strlen($value) > $max_value) ? false : true;
+    }
 
-	/**
-	 * _validateMin
-	 * @param  int $max_value 
-	 * @param  int $value     
-	 * @return true|false            
-	 */
-	private static function _validateMin($min_value, $value) {
-		if (preg_match('/^[\d]+$/', (string) $value)) {
-			return ($value < $min_value) ? false : true;
-		} else if (is_string($value)) {
-			return (strlen($value) < $min_value) ? false : true;
-		}
-		return false;
-	}
+    /**
+     * _validateMinLength
+     * @param  int $min_value 
+     * @param  string $value     
+     * @return true|false            
+     */
+    private static function _validateMinLength($min_value, $value) {
+        return (strlen($value) < $min_value) ? false : true;
+    }
 
-	private static function _validateLength($length, $value) {
-		return is_string($value) && strlen($value) <= $length;
-	}
+    /**
+     * _validateMax
+     * @param  int $max_value 
+     * @param  int $value     
+     * @return true|false            
+     */
+    private static function _validateMax($max_value, $value) {
+        if (preg_match('/^[\d]+$/', $value)) {
+            return ($value > $max_value) ? false : true;
+        }
+        return false;
+    }   
+
+    /**
+     * _validateMin
+     * @param  int $min_value 
+     * @param  int $value     
+     * @return true|false            
+     */
+    private static function _validateMin($min_value, $value) {
+        if (preg_match('/^[\d]+$/', $value)) {
+            return ($value < $min_value) ? false : true;
+        }
+        return false;
+    }
+
+    private static function _validateLength($length, $value) {
+        return is_string($value) && strlen($value) <= $length;
+    }
 }

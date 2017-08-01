@@ -39,5 +39,6 @@ gulp.task('es5', () => {
 });
 
 gulp.task('default', () => {
-    gulp.watch('./resources/src/scss/**/*.scss', ['scss']);
+    //gulp.watch('./resources/src/scss/**/*.scss', ['scss']);
+    gulp.watch('./resources/src/js/**/*.js', ['es5']);
 });

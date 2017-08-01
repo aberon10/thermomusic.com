@@ -101,4 +101,8 @@
     margin: 0 auto;
     padding: 1rem 0 0;
     text-align: center;
+
+    a:hover {
+        text-decoration: underline;
+    }
 }
