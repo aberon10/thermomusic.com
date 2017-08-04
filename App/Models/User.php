@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use PDO;
 use App\Database\PDOConnection;
 use App\Models\BaseClass;
 use App\Libs\Phassword;
@@ -58,8 +59,7 @@ class User
     }
 
     public function createAccount() {
-    	try {
-    		
+    	try {    		
     		$phass = new Phassword;
 
 			if (!$phass->error) {
@@ -85,9 +85,33 @@ class User
 
 				return $stmt->fetch(\PDO::FETCH_ASSOC)['last_insert_id'];
 			} else {
-				throw new Exception($phass->error);
+				throw new \Exception($phass->error);
 			}
+    	} catch (\Exception $e) {
+    		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+    	} catch (\PDOException $e) {
+    		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+    	}
+    }
 
+    public function login() {
+    	try {
+    		$connection = PDOConnection::connect();
+    		
+    		$query = 'CALL sp_login(:user)';
+
+    		$stmt = $connection->prepare($query);
+    		$stmt->bindParam(':user', $this->user);
+    		$stmt->execute();
+    		$data_user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+    		$phass = new Phassword;
+
+    		if (!$phass->error) {
+    			return ($phass->verifPhass($this->password, $data_user['pass'])) ? $data_user['id_usuario'] : false;
+			} else {
+				throw new \Exception($phass->error);
+			}
     	} catch (\Exception $e) {
     		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
     	} catch (\PDOException $e) {

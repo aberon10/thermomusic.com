@@ -9,6 +9,9 @@ use \Core\View;
 use \Core\Controller;
 use \App\Models;
 use \App\Libs\Validate;
+use \App\Libs\FlashValue;
+use \App\Libs\CsrfToken;
+use \App\Libs\Session;
 use function \App\Libs\get_template_head;
 use function \App\Libs\get_template_header;
 use function \App\Libs\get_template_footer;
@@ -18,7 +21,13 @@ class User extends Controller
 {
 	public static function index() {
 		try {
-			// index
+			if (!Session::get('username')) {
+				header('location: /home/login');
+				exit();
+			}
+			Session::checkTimeout();
+			View::setData('title', getenv('APP_NAME').' | Perfil');
+			View::render('sections/user');				
 		} catch (\Exception $e) {
 			exit($e->getMessage());
 		}
@@ -115,12 +124,12 @@ class User extends Controller
 
 							// avatar user
 							$original_image = PROJECT_PATH.'/storage/app/public/avatars/user.jpg';
-							$src_img = '/storage/app/public/avatars/'.$data['user'].'.jpg';
-							$user_image = PROJECT_PATH.$src_img;
+							$user_image = PROJECT_PATH.'/storage/app/public/avatars/'.$data['user'].'.jpg';
 
 							if (copy($original_image, $user_image)) {
 
-								$image_user = new \App\Models\ImageUser($id_user, $src_img);
+								$image_user = new \App\Models\ImageUser($id_user, 
+									getenv('APP_SRC_AVATAR_USER').$data['user'].'.jpg');
 
 								if ($image_user->saveImage()) {
 									
@@ -160,4 +169,98 @@ class User extends Controller
 			\App\Controllers\Error::error_404();
 		}
 	}
-}
+
+	public static function login() {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {			
+			// check validity of csrf token 
+			if (isset($_POST['csrf']) && CsrfToken::isEqual(Session::get('csrf'), $_POST['csrf'])) {
+				if (isset($_POST['username']) && isset($_POST['password'])) {
+					// old value input
+					FlashValue::set('value_username', trim(strtolower($_POST['username'])));
+
+					$error_username = Validate::resolver(strtolower($_POST['username']), [
+						'require' => 'Por favor, ingresa tu nombre de usuario.'
+					]);			
+
+					$error_password = Validate::resolver(strtolower($_POST['password']), [
+						'require' => 'Por favor, ingresa tu contraseña.'
+					]);
+
+					if ($error_username !== true) {
+						FlashValue::set('error_username', $error_username);
+					} 
+
+					if ($error_password !== true) {
+						FlashValue::set('error_password', $error_password);
+					}
+
+					if ($error_username === true && $error_password === true) {
+
+						$user = new \App\Models\User;
+						$user->user = trim(strtolower($_POST['username']));
+						$user->password = trim($_POST['password']);					
+
+						// check user and password
+						if (!$id_user = $user->login()) {
+							FlashValue::set('error_login', 'El usuario y/o contraseña no coinciden.');
+							header('location: /home/login');
+							exit();
+						} else {
+							// check if is a pending account 
+							$pending_user = new \App\Models\PendingUser;
+							$pending_user->id_user = $id_user;
+							$data_pending_account = $pending_user->isPendingAccount();
+
+							if ($data_pending_account['pending'] == 'S') {
+								$token = trim(htmlspecialchars($_POST['_token'])) ?? '';
+
+								if ($data_pending_account['token'] != $token) {
+									FlashValue::set('error_login', 'Es necesario que validez tu cuenta de correo.');
+									header('location: /home/login');
+									exit();
+								}
+								$pending_user->validPendingAccount();
+							}
+								
+							// get user image
+							$image_user = new \App\Models\ImageUser;
+							$image_user->id_user = $id_user;
+							$src_img = $image_user->getImage();
+							
+							FlashValue::delete('value_username');
+							FlashValue::delete('error_username');
+							FlashValue::delete('error_password');
+							FlashValue::delete('error_login');
+
+							// create session user
+							Session::destroy();
+							Session::set('username', trim(strtolower($_POST['username'])));
+							Session::set('src_img', $src_img);
+							Session::set('timeout', time());
+							Session::regenerateSession(true);							
+
+							header('location: /user/index');
+							exit();
+						}
+					} 					
+				}
+			}
+			header('location: /home/login');
+			exit();
+		} 
+		\App\Controllers\Error::error_404();
+	}
+
+	public static function logout() {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			if (isset($_POST['csrf']) && 
+				CsrfToken::isEqual(Session::get('csrf'), $_POST['csrf']) && 
+				Session::has('username')) {
+				Session::destroy();
+				header('location: /home/login');
+				exit();
+			}
+		}
+		\App\Controllers\Error::error_404();
+	}
+} 
