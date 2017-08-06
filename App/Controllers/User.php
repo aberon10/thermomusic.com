@@ -65,7 +65,7 @@ class User extends Controller
 				if ($response['user']) {
 					$user = new \App\Models\User;
 					$user->user = $data['user'];
-					$response['user'] = $user->checkIfUserExists();
+					$response['user'] = $user->checkIfUserExist();
 				}
 
 				$response['email'] = Validate::resolver(
@@ -235,7 +235,7 @@ class User extends Controller
 							// create session user
 							Session::destroy();
 							Session::set('username', trim(strtolower($_POST['username'])));
-							Session::set('src_img', $src_img);
+							Session::set('src_img', getenv('APP_URL').'/'.$src_img);
 							Session::set('timeout', time());
 							Session::regenerateSession(true);							
 
@@ -249,6 +249,82 @@ class User extends Controller
 			exit();
 		} 
 		\App\Controllers\Error::error_404();
+	}
+
+	public static function login_with_facebook() {
+		Session::checkSessionStatus();
+
+		// Facebook
+        $fb = new \Facebook\Facebook([
+            'app_id'                => getenv('FB_ID_API'),
+            'app_secret'            => getenv('FB_SECRET_KEY'),
+            'default_graph_version' => getenv('FB_GRAPH_VERSION'),
+        ]);
+
+        $helper = $fb->getRedirectLoginHelper();
+
+        try {
+            $accessToken = $helper->getAccessToken();
+            // Returns a `Facebook\FacebookResponse` object
+            //$response = $fb->get('/me?fields=id,name,first_name,last_name,email,gender,picture', $accessToken);
+        } catch (\Facebook\Exceptions\FacebookResponseException $e) {
+            // When Graph returns an error
+            echo 'Graph returned an error: ' . $e->getMessage();
+            return false;
+        } catch (\Facebook\Exceptions\FacebookSDKException $e) {
+            // When validation fails or other local issues
+            echo 'Facebook SDK returned an error: ' . $e->getMessage();
+            return false;
+        }
+
+        if (isset($accessToken)) {
+        	// Returns a `Facebook\FacebookResponse` object
+        	$response = $fb->get('/me?fields=id,name,first_name,last_name,email,gender,picture', $accessToken);
+        	$data_user = $response->getGraphUser();
+
+        	// check if account exist
+        	$user = new \App\Models\User();
+        	$user->id_facebook = $data_user['id'];
+
+        	if ($user->checkIfUserExist(1) == true) {
+        		// register account
+        		$username = $data_user['email'] ?? $data_user['name'];
+        		$username = strtolower(str_replace(' ', '.', $username));
+	        	$user->user = $username;
+	        	$user->email = $data_user['email'] ?? NULL;
+	        	$user->sex = ($data_user['gender'] == 'male') ? 'M' : 'F';
+	        	$user->name = $data_user['first_name'];
+	        	$user->lastname = $data_user['last_name'];
+	        	$user->id_type_user = Config\USER_FREE;
+	        	$user->birthdate = NULL;
+	        	$user->id_google = NULL;
+	        	$user->password  = NULL;
+
+	        	$id_user = $user->createAccount();
+	        	
+	        	$img_user = new \App\Models\ImageUser($id_user, $data_user['picture']['url']);
+	        	$img_user->saveImage();
+        	}
+
+			Session::destroy();
+			Session::set('username', $username);
+			Session::set('src_img', $data_user['picture']['url']);
+			Session::set('timeout', time());
+			Session::regenerateSession(true);							
+
+			header('location: /user/index');
+			exit();
+        } else if ($helper->getError()) {
+        	/*
+			var_dump($helper->getError());
+			var_dump($helper->getErrorCode());
+			var_dump($helper->getErrorReason());
+			var_dump($helper->getErrorDescription());
+			exit();
+			*/
+        }
+
+        \App\Controllers\Error::error_404();
 	}
 
 	public static function logout() {

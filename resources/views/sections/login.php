@@ -27,7 +27,7 @@ require VIEWS_PATH.'layouts/head.php';
 	            		<?php if (\App\Libs\Session::has('username')): ?>
 							<div class="user-account">
 								<div class="user-account__left">
-									<img src='<?php echo getenv('APP_URL').\App\Libs\Session::get('src_img'); ?>'>
+									<img src='<?php echo \App\Libs\Session::get('src_img'); ?>'>
 								</div>
 								<div class="user-account__right">
 									<div class="user-account__name">
@@ -48,7 +48,7 @@ require VIEWS_PATH.'layouts/head.php';
 							</div>
 						<?php else: ?>
 	            			<div class="input-group">
-	            				<a href="#" class="radius  social-button-login  button  bg-facebook" id="btn-login-facebook">
+	            				<a href="<?php echo $fb_url; ?>" class="radius  social-button-login  button  bg-facebook" id="btn-login-facebook">
 	            				<i class="icon-facebook"></i><span>Facebook</span></a>
 	            				<a href="#" class="radius  social-button-login  button  bg-google" id="btn-login-google"> 
 	            				<i class="icon-google"></i><span>Google+</span></a>

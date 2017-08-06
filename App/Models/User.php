@@ -38,18 +38,36 @@ class User
 		$this->lastname = $lastname;
 	}
 
-    public function checkIfUserExists() {
+	/**
+	 * checkIfUserExist
+	 * @param  int $api NULL => account app
+	 *            		1    => account Facebook
+	 *              	2    => account Google
+	 * @throws \PDOException|\Exception
+	 * @return boolean|string Return `true` if user don't exist, else return string `El usuario ya existe`
+	 */
+    public function checkIfUserExist($api = NULL) {
     	try {
     		$connection = PDOConnection::connect();
     		
-    		$query = 'CALL sp_check_if_user_exist(:user, :id_free, :id_premium)';
-    		
-    		$stmt = $connection->prepare($query);
+    		if ($api == NULL) {
+    			$query = 'CALL sp_check_if_user_exist(:user, :id_free, :id_premium)';
+    			$stmt = $connection->prepare($query);
+    			$stmt->bindParam(':user', $this->user);
+    		} else if ($api == 1) {
+    			$query = 'CALL sp_check_if_fb_user_exist(:id_facebook, :id_free, :id_premium)';
+    			$stmt = $connection->prepare($query);
+    			$stmt->bindParam(':id_facebook', $this->id_facebook);
+    		} else if ($api == 2) {
+    			$query = 'CALL sp_check_if_gm_user_exist(:id_google, :id_free, :id_premium)';
+    			$stmt = $connection->prepare($query);
+    			$stmt->bindParam(':id_google', $this->id_google);
+    		} else {
+    			throw new \Exception('The value of the api parameter is not valid.');
+    		}   		
 
-    		$stmt->bindParam(':user', $this->user);
     		$stmt->bindValue(':id_free', \Config\USER_FREE);
     		$stmt->bindValue(':id_premium', \Config\USER_PREMIUM);
-
     		$stmt->execute();
 
     		return (!$stmt->fetch(\PDO::FETCH_ASSOC)) ? true : 'El usuario ya existe';
@@ -63,14 +81,18 @@ class User
     		$phass = new Phassword;
 
 			if (!$phass->error) {
-				$hash_password = $phass->cryptPhass($this->password);
+
+				$hash_password = NULL;
+				
+				if ($this->password != NULL) {
+					$hash_password = $phass->cryptPhass($this->password);
+				}
 
 				$connection = PDOConnection::connect();
 
 				$query = 'CALL sp_create_account(:user, :email, :password, :birthdate, :sex, :id_type_user, :id_google, :id_facebook, :name, :lastname)';
 
 				$stmt = $connection->prepare($query);
-
 				$stmt->bindParam(':user', $this->user);
 				$stmt->bindParam(':email', $this->email);
 				$stmt->bindParam(':password', $hash_password);
