@@ -313,18 +313,57 @@ class User extends Controller
 			Session::regenerateSession(true);							
 
 			header('location: /user/index');
-			exit();
+			exit;
         } else if ($helper->getError()) {
         	/*
 			var_dump($helper->getError());
 			var_dump($helper->getErrorCode());
 			var_dump($helper->getErrorReason());
 			var_dump($helper->getErrorDescription());
-			exit();
+			exit;
 			*/
         }
 
         \App\Controllers\Error::error_404();
+	}
+
+	public static function login_with_google() {
+		$google_client = new \Google_Client;
+		$auth = new \App\Libs\GoogleAuth($google_client);
+
+		if ($auth->checkRedirectCode()) {
+			$data_user = $auth->getDataUser();
+			$user = new \App\Models\User;
+			$user->id_google = $data_user['sub'];
+
+			if ($user->checkIfUserExist(2)) {
+				$user->user = $data_user['email'];
+				$user->email = $data_user['email'];
+				$user->name = $data_user['given_name'];
+				$user->lastname = $data_user['family_name'];
+				$user->id_type_user = Config\USER_FREE;
+				$user->birthdate = NULL;
+				$user->sex = NULL;
+				$user->password = NULL;
+				$user->id_facebook = NULL;
+				$id_user = $user->createAccount();
+
+				$img_user = new \App\Models\ImageUser($id_user, $data_user['picture']);
+				$img_user->saveImage();
+			}
+
+			Session::destroy();
+			Session::set('username', $data_user['email']);
+			Session::set('src_img', $data_user['picture']);
+			Session::set('timeout', time());
+			Session::regenerateSession(true);
+
+			header('location: /user/index');
+			exit();
+		}
+
+		header('location: /home/login');
+		exit();
 	}
 
 	public static function logout() {

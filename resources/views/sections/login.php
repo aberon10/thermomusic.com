@@ -48,9 +48,9 @@ require VIEWS_PATH.'layouts/head.php';
 							</div>
 						<?php else: ?>
 	            			<div class="input-group">
-	            				<a href="<?php echo $fb_url; ?>" class="radius  social-button-login  button  bg-facebook" id="btn-login-facebook">
+	            				<a href="<?php echo $fb_url ?? '#'; ?>" class="radius  social-button-login  button  bg-facebook" id="btn-login-facebook">
 	            				<i class="icon-facebook"></i><span>Facebook</span></a>
-	            				<a href="#" class="radius  social-button-login  button  bg-google" id="btn-login-google"> 
+	            				<a href="<?php echo $google_url ?? '#'; ?>" class="radius  social-button-login  button  bg-google" id="btn-login-google"> 
 	            				<i class="icon-google"></i><span>Google+</span></a>
 	            			</div>
 	            		<?php endif; ?>
