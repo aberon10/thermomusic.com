@@ -103,6 +103,7 @@ class Session
 		    if ($sessionTTL > getenv('SESSION_INACTIVE')) {
 		        Session::destroy();
 		        header('location: /home/login');
+		        exit();
 		    }
 		}
 		Session::set('timeout', time());

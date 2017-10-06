@@ -37,7 +37,7 @@ class Validate {
 				if (method && method in Validate) {
 					if (['regex', 'min_length', 'max_length'].indexOf(filter) !== -1) {
 						if (filters[filter].constructor !== Array || filters[filter].length !== 2) {
-							throw new Error('El filtro '+filter+' debe tener como valor un array con la forma [valor, mensaje]');
+							throw new Error('El filtro ' + filter + ' debe tener como valor un array con la forma [valor, mensaje]');
 						} else {
 							result = Validate[method](filters[filter][0], input);
 						}
@@ -90,7 +90,7 @@ class Validate {
 	 */
 	static _validateName(input) {
 		return REGX_NAME.test(input);
-	}	
+	}
 
 	/**
 	 * _validateEmail
@@ -112,8 +112,8 @@ class Validate {
 			let values = input.split(sep);
 			if (values.length === 3) {
 				let date = new Date(values[2], Number(values[1]) - 1, values[0]);
-				return ((date.getFullYear() === Number(values[2])) && 
-				(date.getMonth() === Number(values[1]) - 1) && (date.getDate() === Number(values[0])));
+				return ((date.getFullYear() === Number(values[2])) &&
+					(date.getMonth() === Number(values[1]) - 1) && (date.getDate() === Number(values[0])));
 			}
 		}
 		return false;
@@ -130,11 +130,11 @@ class Validate {
 	 * @return {Number}
 	 */
 	static _numberOfDays(month, year) {
-	    if (month === 1 && year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
-	        return 29;
-	    } else {
-	        return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
-	    }
+		if (month === 1 && year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) {
+			return 29;
+		} else {
+			return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+		}
 	}
 
 	/**

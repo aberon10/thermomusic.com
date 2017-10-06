@@ -34,3 +34,34 @@
 	border-radius: 0 0 3px 3px;
 	padding: 1rem 0;
 }
+
+.panel-headings {
+	padding: 1rem;
+}
+
+.panel-heading-2,
+.panel-heading-3 {
+	font-size: 1.4rem;
+	color: #fff;
+	font-weight: 300;
+	font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+	text-align: left;
+}
+
+.panel-heading-3  {
+	font-size: 1rem;
+	color: #acacac;
+}
+
+// buttons
+.panel-button {
+	font-size: 1.5rem;
+	color: #acacca;
+	cursor: pointer;
+}
+
+.panel-button__close {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+}

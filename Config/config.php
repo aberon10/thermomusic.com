@@ -6,9 +6,11 @@ namespace Config;
  * Configuraciones de la aplicación.
  *
  * @author Alejandro Berón <alejandroberon10@gmail.com>
- * @license <https://opensource.org/licenses/GPL-3.0> GNU GPL version 3
+ * @license <https://opensource.org/licenses/GPL-3.0> GNU GPL versión 3
  * @version 1.0
  */
+
+const PRODUCTION = false;
 
 // Estableze la zona horaria
 date_default_timezone_set('America/Montevideo');
@@ -21,19 +23,19 @@ header('Content-Type: text/html; charset=UTF-8');
 
 /**
  * IMPORTANT!!!
- * 
  * Por defecto el despliegue de errores esta habilitado,
  * es recomendado utilizarlo solo en fases de 'Desarrollo' y 'Testing'.
- * Cambiar el valor de display_errors y error_reporting a 0 en fase de 'Producción'.
+ * Cambiar el valor de la constante PRODUCTION a `true` cuando la aplicación vaya a ser
+ * desplegada en producción.
  */
-// Notificacion de errores y logs
-//ini_set('log_errors', true);
-
-//ini_set('error_log', '/var/log/error_log.log');
-
-ini_set('display_errors', '1');
-
-error_reporting(E_ALL | E_STRICT);
+if (!PRODUCTION) {
+	ini_set('display_errors', '1');
+	error_reporting(E_ALL);
+} else {
+	ini_set('display_errors', '0');
+	ini_set('log_errors', true);
+	ini_set('error_log', '/var/log/thermomusic.com_error_log.log');
+}
 
 // Especifico que el modulo usara cookies para almacenar el id de sesión.
 ini_set('session.use_cookies', true);

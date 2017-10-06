@@ -17,29 +17,26 @@ use function \App\Libs\get_template_header;
 use function \App\Libs\get_template_footer;
 use function \App\Libs\get_template_welcome;
 
-class User extends Controller
+class User extends Controller 
 {
 	public static function index() {
 		try {
-			if (!Session::get('username')) {
-				header('location: /home/login');
-				exit();
-			}
-			Session::checkTimeout();
+			Session::set('csrf', CsrfToken::create());
+			parent::checkStatus(['csrf' => Session::get('csrf')]);
 			View::setData('title', getenv('APP_NAME').' | Perfil');
-			View::render('sections/user');				
+			View::render('sections/user');
 		} catch (\Exception $e) {
 			exit($e->getMessage());
 		}
 	}
 
 	public static function register() {
-		header('Content-type: applicattion/json;charset=utf8');
-		
+		header('Content-type: application/json;charset=utf8');
+
 		$data = json_decode(file_get_contents('php://input'), true);
 
-		if (isset($data['requestPOST'])) {		
-			try {	
+		if (isset($data['requestPOST'])) {
+			try {
 
 				$response = array(
 					'message'        => '<p>Registrado con éxito!</p><p>Comprueba tu cuenta de correo.</p>',
@@ -54,9 +51,9 @@ class User extends Controller
 
 				// validate inputs
 				$response['user'] = Validate::resolver(
-					$data['user'], 
+					$data['user'],
 					array(
-						'require'  => 'Campo obligatorio', 
+						'require'  => 'Campo obligatorio',
 						'username' => 'El nombre de usuario no es valido'
 					)
 				);
@@ -69,17 +66,17 @@ class User extends Controller
 				}
 
 				$response['email'] = Validate::resolver(
-					$data['email'], 
+					$data['email'],
 					array(
-						'require' => 'Campo obligatorio', 
+						'require' => 'Campo obligatorio',
 						'email'   => 'El correo ingresado no es valido'
 					)
-				);	
+				);
 
 				$response['date'] = Validate::resolver(
-					$data['date'], 
+					$data['date'],
 					array(
-						'require' => 'Campo obligatorio', 
+						'require' => 'Campo obligatorio',
 						'date' 	  => 'La fecha no es valida'
 					)
 				);
@@ -100,16 +97,16 @@ class User extends Controller
 				}
 
 				$response['sex'] = empty($data['sex']) ? 'Campo obligatorio.' : true;
-				
-				if ($response['user'] && $response['email'] && $response['password'] && 
+
+				if ($response['user'] && $response['email'] && $response['password'] &&
 					$response['repeatPassword'] && $response['date'] && $response['sex']) {
-					
+
 					$date = explode('-', $data['date']);
 
-					$user = new \App\Models\User($data['user'], $data['password'], $data['email'], 
+					$user = new \App\Models\User($data['user'], $data['password'], $data['email'],
 						$date[2].'-'.$date[1].'-'.$date[0], $data['sex'], Config\USER_FREE);
 
-					// create account					
+					// create account
 					if ($id_user = $user->createAccount()) {
 
 						// register user in table pending_user
@@ -128,11 +125,11 @@ class User extends Controller
 
 							if (copy($original_image, $user_image)) {
 
-								$image_user = new \App\Models\ImageUser($id_user, 
+								$image_user = new \App\Models\ImageUser($id_user,
 									getenv('APP_SRC_AVATAR_USER').$data['user'].'.jpg');
 
 								if ($image_user->saveImage()) {
-									
+
 									// submit email
 					                $to = $data['email'];
 					                $name = $data['user'];
@@ -150,12 +147,12 @@ class User extends Controller
 
 					                if (!$mail->send()) {
 					                	$response['success'] = false;
-										$response['message'] = '<p>Lo sentimos, ocurrio un error.</p> 
+										$response['message'] = '<p>Lo sentimos, ocurrio un error.</p>
 										<p>Por favor, contacta a nuestro equipo de soporte para más ayuda.</p>';
 					                }
-								}						
+								}
 							}
-						}						
+						}
 					} else {
 						$response['success'] = false;
 						$response['message'] = '<p>Lo sentimos, ocurrio un error al registrar la cuenta.</p>';
@@ -163,7 +160,7 @@ class User extends Controller
 				}
 				echo json_encode($response, JSON_FORCE_OBJECT);
 			} catch (\Exception $e) {
-				die($e->getMessage());	
+				die($e->getMessage());
 			}
 		} else {
 			\App\Controllers\Error::error_404();
@@ -171,8 +168,8 @@ class User extends Controller
 	}
 
 	public static function login() {
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {			
-			// check validity of csrf token 
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			// check validity of csrf token
 			if (isset($_POST['csrf']) && CsrfToken::isEqual(Session::get('csrf'), $_POST['csrf'])) {
 				if (isset($_POST['username']) && isset($_POST['password'])) {
 					// old value input
@@ -180,7 +177,7 @@ class User extends Controller
 
 					$error_username = Validate::resolver(strtolower($_POST['username']), [
 						'require' => 'Por favor, ingresa tu nombre de usuario.'
-					]);			
+					]);
 
 					$error_password = Validate::resolver(strtolower($_POST['password']), [
 						'require' => 'Por favor, ingresa tu contraseña.'
@@ -188,7 +185,7 @@ class User extends Controller
 
 					if ($error_username !== true) {
 						FlashValue::set('error_username', $error_username);
-					} 
+					}
 
 					if ($error_password !== true) {
 						FlashValue::set('error_password', $error_password);
@@ -198,7 +195,7 @@ class User extends Controller
 
 						$user = new \App\Models\User;
 						$user->user = trim(strtolower($_POST['username']));
-						$user->password = trim($_POST['password']);					
+						$user->password = trim($_POST['password']);
 
 						// check user and password
 						if (!$id_user = $user->login()) {
@@ -206,7 +203,7 @@ class User extends Controller
 							header('location: /home/login');
 							exit();
 						} else {
-							// check if is a pending account 
+							// check if is a pending account
 							$pending_user = new \App\Models\PendingUser;
 							$pending_user->id_user = $id_user;
 							$data_pending_account = $pending_user->isPendingAccount();
@@ -221,12 +218,12 @@ class User extends Controller
 								}
 								$pending_user->validPendingAccount();
 							}
-								
+
 							// get user image
 							$image_user = new \App\Models\ImageUser;
 							$image_user->id_user = $id_user;
 							$src_img = $image_user->getImage();
-							
+
 							FlashValue::delete('value_username');
 							FlashValue::delete('error_username');
 							FlashValue::delete('error_password');
@@ -237,17 +234,17 @@ class User extends Controller
 							Session::set('username', trim(strtolower($_POST['username'])));
 							Session::set('src_img', getenv('APP_URL').'/'.$src_img);
 							Session::set('timeout', time());
-							Session::regenerateSession(true);							
+							Session::regenerateSession(true);
 
 							header('location: /user/index');
 							exit();
 						}
-					} 					
+					}
 				}
 			}
 			header('location: /home/login');
 			exit();
-		} 
+		}
 		\App\Controllers\Error::error_404();
 	}
 
@@ -301,7 +298,7 @@ class User extends Controller
 	        	$user->password  = NULL;
 
 	        	$id_user = $user->createAccount();
-	        	
+
 	        	$img_user = new \App\Models\ImageUser($id_user, $data_user['picture']['url']);
 	        	$img_user->saveImage();
         	}
@@ -310,7 +307,7 @@ class User extends Controller
 			Session::set('username', $username);
 			Session::set('src_img', $data_user['picture']['url']);
 			Session::set('timeout', time());
-			Session::regenerateSession(true);							
+			Session::regenerateSession(true);
 
 			header('location: /user/index');
 			exit;
@@ -321,7 +318,8 @@ class User extends Controller
 			var_dump($helper->getErrorReason());
 			var_dump($helper->getErrorDescription());
 			exit;
-			*/
+        	*/
+
         }
 
         \App\Controllers\Error::error_404();
@@ -368,8 +366,8 @@ class User extends Controller
 
 	public static function logout() {
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			if (isset($_POST['csrf']) && 
-				CsrfToken::isEqual(Session::get('csrf'), $_POST['csrf']) && 
+			if (isset($_POST['csrf']) &&
+				CsrfToken::isEqual(Session::get('csrf'), $_POST['csrf']) &&
 				Session::has('username')) {
 				Session::destroy();
 				header('location: /home/login');
@@ -378,4 +376,4 @@ class User extends Controller
 		}
 		\App\Controllers\Error::error_404();
 	}
-} 
+}

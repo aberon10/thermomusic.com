@@ -1,104 +1,21 @@
-// Modal
-div.modal {
+.modal {
     position: fixed;
     z-index: 10000;
+    display: none;
     top: 0;
     left: 0;
-    display: none;
-    overflow: hidden;
-    width: 100%;
+    width:100%;
+    height: 100%;
     min-height: 100vh;
-    margin-bottom: 2em;
-    transition: all 0.3s ease;
-    transition-delay: 0.1s;
-    opacity: 0;
-    background: rgba(#000, 0.4);
-    &.modal-active {
+    background-color:rgba(#000, 0.6);
+
+    &.visible {
         display: block;
-        opacity: 0.6;
     }
-}
 
-div.modal-play-queue {
-    @extend .modal;
-    z-index: 1000;
-    background: rgba(#000, 0.4);
-    display: none;
-    &.active {
-        display: block;
-        opacity: 0.6;
-    }
-}
-
-div.modal-popup {
-    @extend .modal;
-    z-index: 10000;
-    background: rgba(#000, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    opacity: 1;
-    transform: scale(0);
-    transition: transform .3s;
-    &.active {
-        transform: scale(1);
-        .modal-popup__inner {
-            transform: scale(1);
-        }
-    }
-    h2 {
-        color: $lighter-blue
-    }
-    &__header,
-    &__body {
-        padding: 1em;
-    }
-    &__header {
-        border-bottom: 1px solid #121214;
-        border-top-right-radius: 2px;
-        border-top-left-radius: 2px;
-        span {
-            float: right;
-            color: $body--color;
-            cursor: pointer;
-        }
-    }
-    &__body {
-        border-bottom-right-radius: 2px;
-        border-bottom-left-radius: 2px;
-    }
-    &__footer {
-        .buttons {
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            a:last-child {
-                margin-left: 1em;
-                color: $body--color;
-                background: #CCC;
-                &:hover {
-                    background: darken(#CCC, 5%);
-                }
-            }
-        }
-    }
-}
-
-.modal-popup__inner {
-    position: relative;
-    top: 4em;
-    background: #1c1c1f;
-    width: 100%;
-    max-width: 960px;
-    z-index: 10000;
-    transform: scale(0);
-    transition: transform .3s;
-    @include from(tablet) {
-        width: 90%;
-    }
-    @include from(hd) {
-        width: 80%;
+    &.modal-popup {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

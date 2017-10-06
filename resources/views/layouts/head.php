@@ -6,6 +6,8 @@
         <meta name="description" content="Encuentra la música para cada momento. ThermoMusic es un servicio de música digital que te da acceso a un gran catálogo de canciones y diversos gáneros musicales.">
         <meta name="keywords" content="esuchar música online, streaming de audio">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="<?php echo \App\Libs\Session::get('csrf'); ?>">
         <link type="text/css" rel="stylesheet" href="/css/icons.css" media="screen" title="no title">
         <link type="text/css" rel="stylesheet" href="/css/styles.min.css">
         <title><?= $title ?></title>

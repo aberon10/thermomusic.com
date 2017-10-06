@@ -8,8 +8,10 @@ TODO
 TEST_CODE.txt
 user_guide.txt
 .jshintrc
+.eslintrc.json
 .tern-project
 .editorconfig
 .phpintel/
 .config.ini
 .env
+.vscode/

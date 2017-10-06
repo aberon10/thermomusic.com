@@ -27,21 +27,6 @@ body {
     font-size: 1rem;
     line-height: 1.5;
     background-color: #fff;
-    /* scrollbar */
-    &::-webkit-scrollbar {
-        width: 6px;
-    }
-    /* Handle */
-    &::-webkit-scrollbar-track {
-        background: #000;
-    }
-    &::-webkit-scrollbar-thumb {
-        cursor: pointer;
-        background: #1c1c1f;
-    }
-    &::-webkit-scrollbar-thumb:hover {
-        background: #1c1c1f;
-    }
 }
 
 a {

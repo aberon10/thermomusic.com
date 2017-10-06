@@ -1,5 +1,5 @@
 // paleta de colores para la aplicación
-$blue: #0F7CFF;
+$blue: #007feb;
 $dark-blue: #061d2f;
 $light-blue: #00afef;
 $alice-dark: lighten(#1287A8, 5%);
@@ -7,7 +7,7 @@ $alice-blue: lighten(#00f0ff, 5%);
 
 // colores
 $white: #FFFFFF;
-$black: #000000;
+$black: #181818;
 $gray: #8B939E;
 $light-gray: #d8d5d5;
 $red: #cb2431;
@@ -19,6 +19,8 @@ $google: #d73d32;
 $twitter: #32CBFE;
 $instagram: #c08d64;
 $youtube: #b31217;
+
+$menu-popup-bg: rgb(24, 24, 24);
 
 .blue {
     background-color: $blue;
