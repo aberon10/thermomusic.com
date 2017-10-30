@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 // Components
 import NavListItems from './NavListItems';
 import RecentlyPlayed from './RecentlyPlayed';
+import { addClassModal } from '../../ModalForm/utils';
 
 const links = [
 	{
@@ -36,12 +37,14 @@ class NavBarBody extends React.Component {
 		return (
 			<div className="nav-bar__body">
 				<ul className="nav-list  group">
-					<NavListItems 
+					<NavListItems
 						links={links}
 						typeLink="3"
 					/>
 				</ul>
-				<RecentlyPlayed links={this.props.linksRecentlyArtist}/>
+				<div className="group">
+					<a href="#" onClick={addClassModal} data-id-modal="modal-form-playlist">NUEVA PLAYLIST</a>
+				</div>
 			</div>
 		);
 	}

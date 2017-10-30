@@ -22,6 +22,10 @@ $youtube: #b31217;
 
 $menu-popup-bg: rgb(24, 24, 24);
 
+.color-red {
+	color: #cb2431;
+}
+
 .blue {
     background-color: $blue;
 }
@@ -49,7 +53,7 @@ $menu-popup-bg: rgb(24, 24, 24);
 }
 
 /*
-	FONDOS 
+	FONDOS
 	background-image: linear-gradient(rgb(18, 18, 18), rgb(7, 7, 7) 85%);
 	background-image: linear-gradient(rgb(37, 33, 49), rgb(7, 6, 9) 85%);
 	background-image: linear-gradient(rgb(53, 81, 100), rgb(5, 8, 10) 85%);

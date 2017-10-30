@@ -5,7 +5,7 @@ import TMPlayer from './TMPlayer';
 function RangeSlider() {
 	let range = document.getElementById('range-slider'),
 		rangeLoading = document.querySelector('.range-slider__loading'),
-		iconVolume = document.getElementById('icon-volume'),
+		iconVolume = document.getElementById('button-volume').firstChild,
 		tooltip = document.getElementById('tooltip-volume'),
 		dragger = range.children[0],
 		draggerWidth = 10,

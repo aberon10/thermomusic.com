@@ -14,6 +14,8 @@ import Config from '../../../config';
 
 const url = '/album/index/';
 
+import inFavorites from './util';
+
 class Artist extends React.Component {
 	constructor(props) {
 		super(props);
@@ -21,8 +23,9 @@ class Artist extends React.Component {
 
 	render() {
 		let albums = [];
-		let tracks = [];		
+		let tracks = [];
 		let data = this.props.data;
+		let favorites = this.props.favorites;
 		let artistName = data[0][0].nombre_artista;
 		let bgArtistHeader= Config.urlResource + '/' + data[0][0].src_img;
 		let dataAlbums = Object.keys(data[1][0]).map(key => [data[1][0][key]]);
@@ -48,7 +51,11 @@ class Artist extends React.Component {
 				trackName: dataTracks[index][0].nombre_cancion,
 				counter: dataTracks[index][0].contador,
 				artist: `por ${artistName}`,
-				srcAlbum: dataTracks[index][0].src_img
+				srcAlbum: dataTracks[index][0].src_img,
+				playlist: false,
+				idPlaylist: false,
+				favorite: inFavorites(favorites, dataTracks[index][0].id_cancion),
+				inFavoritePage: false
 			});
 		});
 

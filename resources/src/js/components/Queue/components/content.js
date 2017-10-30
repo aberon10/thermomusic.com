@@ -23,7 +23,9 @@ export default class Content extends React.Component {
 		let listItems = [];
 
 		if (PlaybackQueue.tracks && PlaybackQueue.tracks.length > 0) {
-			PlaybackQueue.tracks.forEach(function (track) {
+			PlaybackQueue.tracks.forEach((track) => {
+				track.playlist = false;
+				track.idPlaylist = null;
 				let dataTrack = JSON.stringify(track);
 				let classNameCardtem = 'card-item';
 				let classNameButtonPlay = 'icon-play-2';

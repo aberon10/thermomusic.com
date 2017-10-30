@@ -26,11 +26,11 @@ class Explorer extends React.Component {
 		this._loadData = this._loadData.bind(this);
 	}
 
-	componentDidMount() { 
+	componentDidMount() {
 		this._updateState();
 	}
-	
-	componentWillReceiveProps() { 
+
+	componentWillReceiveProps() {
 		this._updateState();
 	}
 
@@ -43,7 +43,7 @@ class Explorer extends React.Component {
 			},
 			reponseType: 'json'
 		};
-		
+
 		if (params.id_genre) {
 			dataRequest.url = '/artist/get_artist_by_genre';
 			dataRequest.data.genre = params.id_genre;
@@ -58,9 +58,7 @@ class Explorer extends React.Component {
 		Ajax.post(dataRequest)
 			.then((response) => {
 				this._loadData(response);
-			}).catch((error) => {
-				console.log(error);
-			});	
+			}).catch((error) => {});
 	}
 
 	_loadData(resp) {
@@ -70,37 +68,37 @@ class Explorer extends React.Component {
 
 		if (result.data) {
 			let data = Object.keys(result.data).map(key => [result.data[key]]);
-			
+
 			if (Object.keys(params).length === 0) {
 				element = <Genres data={data}/>;
 			} else if (params.id_genre) {
 				element = <Artists data={data}/>;
 			} else if (params.id_artist && data.length >= 2) {
-				element = <Artist data={data}/>;
+				element = <Artist data={data} favorites={result.favorites}/>;
 			} else if (params.id_album) {
-				element = <Album data={data}/>;
-			}	
+				element = <Album data={data} favorites={result.favorites}/>;
+			}
 		}
 
 		this.setState({
 			element: element
 		});
 	}
-	
+
 	render() {
 		if (this.state.element) {
 			return (
 				<div>
 					{this.state.element}
 				</div>
-			);			
+			);
 		} else {
 			/*
 				TODO:
 				AGREGAR UN LOADING...
 			 */
-			return (		
-				<MainContent>	
+			return (
+				<MainContent>
 					<div>Loading...</div>
 				</MainContent>
 			);

@@ -7,12 +7,14 @@ use Core\Controller;
 use App\Libs\CsrfToken;
 use App\Libs\Session;
 use App\Libs\Sanitize;
+use App\Models\User;
+use App\Models\Favorite;
 
 class Artist extends Controller
 {
 	public static function index() {
         try {
-			parent::checkStatus(['csrf' => Session::get('csrf')]);				
+			parent::checkStatus(['csrf' => Session::get('csrf')]);
             View::setData('title', getenv('APP_NAME'));
             View::render('sections/user');
         } catch (\Exception $e) {
@@ -31,9 +33,9 @@ class Artist extends Controller
 				'data' => null,
 				'message' => 'No hay artistas disponibles.'
 			);
-			
+
 			$id_genre = Sanitize::filter_int($data['genre']);
-			
+
 			if ($id_genre !== NULL && (int) $id_genre > 0) {
 				$artist = new \App\Models\Artist;
 				$artist->id_genre = $id_genre;
@@ -73,7 +75,15 @@ class Artist extends Controller
 				'data' => null,
 				'message' => 'No hay contenido disponible.'
 			);
-			
+
+			$user = new User;
+            $user->user = Session::get('username');
+			$user_data = $user->get_user_by_name();
+
+			$favorite = new Favorite();
+			$favorite->id_user = $user_data['id_usuario'];
+			$response['favorites'] = $favorite->get_favorites_user();
+
 			$id_artist = Sanitize::filter_int($data['artist']);
 
 			if ($id_artist !== NULL && (int) $id_artist > 0) {
@@ -99,7 +109,7 @@ class Artist extends Controller
 					$album = new \App\Models\Album;
 					$album->id_artist = $id_artist;
 					$albums = $album->getAlbumByArtist();
-					
+
 					if (count($albums) > 0) {
 						// Recupero la imágen del album
 						$img_album = new \App\Models\ImageAlbum;

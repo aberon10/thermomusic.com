@@ -9,6 +9,7 @@ import TMPlayer from '../../app/TMPlayer/TMPlayer';
 import PlaybackQueue from '../../app/PlaybackQueue/PlaybackQueue';
 import {getDataTrack} from '../../app/OptionMenu/OptionMenu';
 
+import { addTrackToFavorites } from '../../components/ModalForm/utils';
 
 export default class TrackList extends React.Component {
 	constructor(props) {
@@ -32,7 +33,13 @@ export default class TrackList extends React.Component {
 				trackName: item.trackName,
 				artist: item.artist,
 				srcAlbum: item.srcAlbum,
+				playlist: item.playlist,
+				idPlaylist: item.idPlaylist
 			});
+			let classFavorite = 'tracklist-item__icon  add-favorit';
+
+			if (item.favorite)
+				classFavorite += ' color-red';
 
 			// compruebo si hay canciones en la "Lista de Espera"
 			if (PlaybackQueue.tracks && PlaybackQueue.tracks.length > 0) {
@@ -54,8 +61,8 @@ export default class TrackList extends React.Component {
 					<div className="tracklist-item__icon" onClick={getDataTrack}>
 						<span className="icon-ellipsis-h"></span>
 					</div>
-					<div className="tracklist-item__icon  add-favorit">
-						<span className="icon-heart"></span>
+					<div className={classFavorite} data-id={item.id} onClick={addTrackToFavorites} data-favorite={item.inFavoritePage}>
+						<span className="icon-heart" data-id={item.id} data-favorite={item.inFavoritePage}></span>
 					</div>
 					<div className="tracklist-item__duration">{item.duration}</div>
 				</div>

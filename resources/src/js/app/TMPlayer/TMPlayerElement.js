@@ -32,7 +32,7 @@ export default class TMPlayerElement {
 			rangeSlider: document.getElementById('range-slider'),
 			rangeLoading: document.querySelector('.range-slider__loading'),
 			tooltipVolume: document.getElementById('tooltip-volume'),
-			iconVolume: document.getElementById('icon-volume'),
+			iconVolume: document.getElementById('button-volume'),
 			slider: document.getElementById('range-slider').children[0]
 		};
 	}
@@ -185,7 +185,7 @@ export default class TMPlayerElement {
 	}
 
 	static changeTheClassOfTheButtonVolume() {
-		let button = TMPlayerElement.elements.iconVolume.classList;
+		let button = TMPlayerElement.elements.iconVolume.firstChild.classList;
 		if (button.contains('icon-volume')) {
 			button.remove('icon-volume');
 			button.add('icon-mute');

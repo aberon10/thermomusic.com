@@ -9,7 +9,7 @@ import PlayerCenter from './components/PlayerCenter';
 import PlayerRight from './components/PlayerRight';
 
 // animation
-import togglePlayer from './animation';
+import displayPlayer from './animation';
 
 export default class Player extends React.Component {
 	constructor(props) {
@@ -21,7 +21,7 @@ export default class Player extends React.Component {
 			<div className="player-container">
 				<div className="player" id="player">
 					<div className="player__menu">
-						<button className="control-button" id="close-player"><i className="icon-arrow-left" onClick={togglePlayer}></i></button>
+						<button className="control-button" id="close-player" onClick={displayPlayer}><i className="icon-arrow-left"></i></button>
 					</div>
 					<PlayerLeft />
 					<PlayerCenter />

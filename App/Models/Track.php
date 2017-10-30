@@ -10,6 +10,7 @@ class Track
 {
 	use BaseClass;
 
+	private $id;
 	private $id_artist;
 	private $id_genre;
 	private $name_artist;
@@ -28,6 +29,19 @@ class Track
 			$stmt->bindValue(':id_artist', $this->id_artist);
 			$stmt->execute();
 			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		} catch (\PDOException $e) {
+			echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+		}
+	}
+
+	public function get_track_by_id() {
+		try {
+    		$connection = PDOConnection::connect();
+			$query = 'CALL sp_get_track_by_id(:id_track)';
+			$stmt = $connection->prepare($query);
+			$stmt->bindValue(':id_track', $this->id);
+			$stmt->execute();
+			return $stmt->fetch(\PDO::FETCH_ASSOC);
 		} catch (\PDOException $e) {
 			echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
 		}

@@ -10,9 +10,12 @@ import Player from './components/Player/index';
 import FloatingPlayer from './components/Player/FloatingPlayer';
 import Queue from './components/Queue/index';
 import MenuPopUp from './components/MenuPopUp/index';
+import ModalForm from './components/ModalForm/index';
 import Explorer from './sections/Explorer/index';
 import Music from './sections/Music/index';
+import Playlist from './sections/Playlist/index';
 import Page404 from './sections/Page404/index';
+import Favorites from './sections/Favorites/index';
 
 const routes = [
 	{
@@ -52,8 +55,18 @@ const routes = [
 	},
 	{
 		path: '/music',
-		exact: false,
+		exact: true,
 		component: Music
+	},
+	{
+		path: '/music/favorites',
+		exact: true,
+		component: Favorites
+	},
+	{
+		path: '/playlist/index/:id',
+		exact: false,
+		component: Playlist
 	},
 	{
 		path: null,
@@ -78,6 +91,7 @@ class App extends React.Component {
 				<FloatingPlayer/>
 				<Queue/>
 				<MenuPopUp/>
+				<ModalForm/>
 			</div>
 		);
 	}

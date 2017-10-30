@@ -19,20 +19,26 @@ class CoverArtist extends React.Component {
 
 		data.forEach((item, index) => {
 			let coverArtistFooter = null;
-			let coverArtisHeader = (
-				<div className="cover-artist-image" 
-					style={{backgroundImage:`url(${Config.urlResource+'/'+item.src})`}}>
-				</div>
-			)
+			let coverArtisHeader = null;
+
+			if (item.element) {
+				coverArtisHeader = item.element;
+			} else {
+				coverArtisHeader = (
+					<div className="cover-artist-image"
+						style={{ backgroundImage: `url(${Config.urlResource + '/' + item.src})` }}>
+					</div>
+				);
+			}
 
 			if (item.album) {
-				coverArtistFooter = (				
+				coverArtistFooter = (
 					<div className="album-info">
 						<h3 className="album-info__name">{item.name}</h3>
 						<p className="album-info__artist">{item.artist}</p>
 						<p className="album-info__year">{item.albumInfo}</p>
 					</div>
-				)
+				);
 			} else {
 				coverArtistFooter = (
 					<Link to={item.url} className="cover-artist-name">{item.name}</Link>
@@ -54,7 +60,7 @@ class CoverArtist extends React.Component {
 						{coverArtistFooter}
 					</div>
 				</div>
-			);					
+			);
 		});
 
 		return (

@@ -9,7 +9,7 @@ use App\Libs\Phassword;
 use Config;
 
 class User
-{	
+{
 	use BaseClass;
 
 	private $id;
@@ -24,7 +24,7 @@ class User
 	private $name;
 	private $lastname;
 
-	public function __construct($user = '', $password = '', $email = '', $birthdate = '', $sex = '', 
+	public function __construct($user = '', $password = '', $email = '', $birthdate = '', $sex = '',
 		$id_type_user = '',$id_google = null, $id_facebook = null, $name = null, $lastname = null) {
 		$this->user = $user;
 		$this->password = $password;
@@ -49,7 +49,7 @@ class User
     public function checkIfUserExist($api = NULL) {
     	try {
     		$connection = PDOConnection::connect();
-    		
+
     		if ($api == NULL) {
     			$query = 'CALL sp_check_if_user_exist(:user, :id_free, :id_premium)';
     			$stmt = $connection->prepare($query);
@@ -64,7 +64,7 @@ class User
     			$stmt->bindParam(':id_google', $this->id_google);
     		} else {
     			throw new \Exception('The value of the api parameter is not valid.');
-    		}   		
+    		}
 
     		$stmt->bindValue(':id_free', \Config\USER_FREE);
     		$stmt->bindValue(':id_premium', \Config\USER_PREMIUM);
@@ -77,13 +77,13 @@ class User
     }
 
     public function createAccount() {
-    	try {    		
+    	try {
     		$phass = new Phassword;
 
 			if (!$phass->error) {
 
 				$hash_password = NULL;
-				
+
 				if ($this->password != NULL) {
 					$hash_password = $phass->cryptPhass($this->password);
 				}
@@ -119,7 +119,7 @@ class User
     public function login() {
     	try {
     		$connection = PDOConnection::connect();
-    		
+
     		$query = 'CALL sp_login(:user)';
 
     		$stmt = $connection->prepare($query);
@@ -139,5 +139,22 @@ class User
     	} catch (\PDOException $e) {
     		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
     	}
-    }
+	}
+
+	public function get_user_by_name() {
+		try {
+			$connection = PDOConnection::connect();
+
+			$query = 'CALL sp_get_user_by_name(:user)';
+			$stmt = $connection->prepare($query);
+    		$stmt->bindParam(':user', $this->user);
+			$stmt->execute();
+
+			return $stmt->fetch(\PDO::FETCH_ASSOC);
+    	} catch (\Exception $e) {
+    		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+    	} catch (\PDOException $e) {
+    		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+    	}
+	}
 }

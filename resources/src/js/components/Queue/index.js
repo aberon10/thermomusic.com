@@ -57,7 +57,7 @@ export default class Queue extends React.Component {
 
 	render() {
 		return (
-			<Modal classes={this.state.visible === true ? 'visible' : ''} clickEventHandler={Queue.hideQueue}>
+			<Modal classes={this.state.visible === true ? 'visible' : ''} clickEventHandler={Queue.hideQueue} id="modal">
 				<div className="panel-wrapper-queuelist  slideInRight">
 					{this.state.list}
 				</div>

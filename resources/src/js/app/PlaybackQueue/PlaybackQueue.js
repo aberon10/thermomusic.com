@@ -77,6 +77,7 @@ export default class PlaybackQueue {
 			PlaybackQueue._addTrackTheQueue(dataTrack);
 		}
 
+		sessionStorage.removeItem('id_track');
 		MenuPopUp.resetStates();
 	}
 

@@ -2,13 +2,14 @@
 
 import React from 'react';
 
-import togglePlayer from './animation';
+import displayPlayer from './animation';
+
 export default class FloatingPlayer extends React.Component {
 	render() {
 		return(
 			<div className="floating-player" id="floating-player">
 				<div className="floating-player__left">
-					<button className="control-button  toggle-button-player" id="open-player" onClick={togglePlayer}>
+					<button className="control-button  toggle-button-player" id="open-player" onClick={displayPlayer}>
 						<i className="icon-arrow-up"></i>
 					</button>
 				</div>

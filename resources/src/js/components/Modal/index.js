@@ -11,7 +11,7 @@ export default class Modal extends React.Component {
 	render() {
 		let classes = 'modal ' + this.props.classes;
 		return (
-			<div className={classes} onClick={this.props.clickEventHandler} id="modal">
+			<div className={classes} onClick={this.props.clickEventHandler} id={this.props.id}>
 				{this.props.children}
 			</div>
 		);

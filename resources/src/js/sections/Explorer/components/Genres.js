@@ -27,7 +27,7 @@ class Genres extends React.Component {
 				src: encodeURI(data[i][0].src_img),
 				name: data[i][0].nombre_genero
 			});
-		}		
+		}
 
 		return (
 			<MainContent>

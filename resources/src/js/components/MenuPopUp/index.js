@@ -8,6 +8,8 @@ import Modal from '../Modal/index';
 
 // app
 import PlaybackQueue from '../../app/PlaybackQueue/PlaybackQueue';
+import AppPlaylist from '../../app/Music/Playlist';
+import { addTrackToFavorites } from '../ModalForm/utils';
 
 // Config
 import Config from '../../config';
@@ -29,8 +31,9 @@ export default class MenuPopUp extends React.Component {
 	}
 
 	static hide(e) {
-		if (e.target.id === 'modal') {
+		if (e.target.id === 'modal-popup') {
 			MenuPopUp.resetStates();
+			sessionStorage.clear();
 		}
 	}
 
@@ -46,6 +49,7 @@ export default class MenuPopUp extends React.Component {
 
 		if (this.state.data && typeof this.state.data === 'string') {
 			let data = JSON.parse(this.state.data);
+			sessionStorage.setItem('id_track', data.id);
 
 			// Button Add/Remove Waiting List
 			let existTrackInList = PlaybackQueue.inQueue(data.id) !== false;
@@ -58,7 +62,7 @@ export default class MenuPopUp extends React.Component {
 			}
 
 			element = (
-				<Modal classes={this.state.visible === true ? 'modal-popup' : ''} clickEventHandler={MenuPopUp.hide}>
+				<Modal classes={this.state.visible === true ? 'modal-popup' : ''} clickEventHandler={MenuPopUp.hide} id="modal-popup">
 					<div className="menu-popup  zoomIn">
 						<div className="menu-popup__header">
 							<div className="menu-popup__header-thumbnails">
@@ -76,18 +80,16 @@ export default class MenuPopUp extends React.Component {
 										{iconWaitingList}
 									</li>
 								)}
-								<li className="nav-list__item">
+								<li className="nav-list__item" onClick={AppPlaylist.getByUser}>
 									<span className="nav-list__link  icon-list-add"> Añadir a una playlist... </span>
 								</li>
-								<li className="nav-list__item">
-									<span className="nav-list__link  icon-heart">  Añadir a mi música...</span>
-								</li>
-								<li className="nav-list__item">
-									<span className="nav-list__link  icon-cd"> Ir al artista</span>
-								</li>
-								<li className="nav-list__item">
-									<span className="nav-list__link  icon-note"> Ir al album</span>
-								</li>
+								{data.playlist && (
+									<li className="nav-list__item" onClick={AppPlaylist.removeSongToPlaylist}
+										data-track={this.state.data}>
+										<span className="nav-list__link  icon-close"
+											data-track={this.state.data}> Quitar de la playlist</span>
+									</li>
+								)}
 							</ul>
 						</div>
 					</div>

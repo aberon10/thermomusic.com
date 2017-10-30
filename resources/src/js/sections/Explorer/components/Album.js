@@ -8,13 +8,16 @@ import MainContent from '../../../components/Main';
 import TrackList from '../../components/TrackList';
 import CoverArtist from '../../../components/Containers/CoverArtist';
 
+import inFavorites from './util';
+
 class Album extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props);
 	}
 
 	render() {
 		let data = this.props.data;
+		let favorites = this.props.favorites;
 		let tracks = [];
 
 		let album = [{
@@ -34,7 +37,11 @@ class Album extends React.Component {
 				duration: item[0].duracion,
 				counter: item[0].contador,
 				srcAlbum: encodeURI(data[0][0].src_img),
-				artist: `por ${data[0][0].nombre_artista}`
+				artist: `por ${data[0][0].nombre_artista}`,
+				playlist: false,
+				idPlaylist: false,
+				favorite: inFavorites(favorites, item[0].id_cancion),
+				inFavoritePage: false
 			});
 		});
 

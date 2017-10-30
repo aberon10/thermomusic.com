@@ -1,5 +1,11 @@
 'use strict';
 
+function stringFromCharCode(str) {
+	return String(str).replace(/&#([0-9]+);/g, (match, $1) => {
+		return String.fromCharCode($1);
+	});
+}
+
 function timeFormat(time) {
 	let minutes = parseInt(time / 60);
 	let seconds = parseInt(time % 60);
@@ -57,4 +63,33 @@ function totalTimeInStringFormat(tracks) {
 	return `${hours < 10 ? '0' + hours : hours}:${minutesAndSeconds}`;
 }
 
-export { timeFormat, totalTimeInStringFormat };
+function displayNotification(message, time=3000) {
+	let notification = document.getElementById('notification');
+	notification.children[0].innerHTML = message ? message : '';
+	notification.classList.add('visible');
+	setTimeout(() => {
+		notification.classList.remove('visible');
+		notification.children[0].innerHTML = '';
+	}, time);
+}
+
+
+function removeSessionItem(item) {
+	if (item) {
+		if (item.constructor === Array) {
+			item.forEach((i) => sessionStorage.removeItem(i));
+		} else if (typeof item === 'string') {
+			sessionStorage.removeItem(item);
+		}
+	} else {
+		sessionStorage.clear();
+	}
+}
+
+export {
+	timeFormat,
+	totalTimeInStringFormat,
+	displayNotification,
+	removeSessionItem,
+	stringFromCharCode
+};

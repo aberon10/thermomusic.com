@@ -19,8 +19,8 @@ class PlayerRight extends React.Component {
 							<span className="tooltip  tooltip-control">Cola de reproducción</span>
 						</a>
 						<div className="volume-bar">
-							<button className="control-button">
-								<i className="icon-volume" id="icon-volume"></i>
+							<button className="control-button" id="button-volume">
+								<i className="icon-volume"></i>
 							</button>
 							<div className="range-container">
 								<div className="range-slider" id="range-slider"><span className="slider"></span><span className="tooltip  tooltip-volume" id="tooltip-volume">0%</span><div className="range-slider__loading"></div>
