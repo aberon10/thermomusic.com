@@ -10,6 +10,8 @@ import TMPlayer from '../../../app/TMPlayer/TMPlayer';
 import prepareSong from '../../../app/TMPlayer/';
 import { getDataTrack } from '../../../app/OptionMenu/OptionMenu';
 
+import {substr} from '../../utils';
+
 // Config
 import Config from '../../../config';
 import Queue from '../index';
@@ -45,10 +47,10 @@ export default class Content extends React.Component {
 						</div>
 						<div className="card-info">
 							<Link to="#">
-								<h2 className="card-info__heading-2">{track.trackName}</h2>
+								<h2 className="card-info__heading-2">{substr(track.trackName)}</h2>
 							</Link>
 							<Link to="#">
-								<h3 className="card-info__heading-3">{track.artist}</h3>
+								<h3 className="card-info__heading-3">{substr(track.artist)}</h3>
 							</Link>
 						</div>
 						<div className="card-options">

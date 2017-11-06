@@ -170,7 +170,7 @@ export default class AppPlaylist {
 			let parent = element.parentNode;
 			parent.removeChild(element);
 
-			if (parent.childNodes.length === 0) {
+			if (parent.children.length === 0) {
 				history.back();
 			}
 

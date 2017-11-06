@@ -32,7 +32,7 @@ function getDataOfTracksAndSetIndexTrack(tracks, idNextTrack) {
  */
 export default function prepareSong(e) {
 	let nextTrack = e.target.parentNode.parentNode;
-	let tracks = Array.from(nextTrack.parentNode.childNodes);
+	let tracks = Array.from(nextTrack.parentNode.children);
 	let idNextTrack = JSON.parse(nextTrack.dataset.track).id;
 	let idCurrentTrack = PlaybackQueue.tracks ? PlaybackQueue.tracks[PlaybackQueue.indexTrack].id : null;
 

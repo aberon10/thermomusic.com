@@ -12,12 +12,18 @@
 	background-color: #181818;
 	padding-bottom: 60px;
 
+	&.panel-search {
+		left: 0;
+		right: none;
+	}
+
     @include from(tablet) {
         width: 320px;
     }
 }
 
 .panel-queuelist__header {
+	padding-top: 1rem;
     .panel-button__close {
         @include from(tablet) {
             display: none;
@@ -26,10 +32,20 @@
 }
 
 .panel-queuelist__header,
-.card-item {
+.card-item,
+.card-group {
     position: relative;
     border-bottom: 1px solid #222;
     margin-bottom: 1.5rem;
+}
+
+
+.card-group-title {
+	text-align: left;
+	color:$gray;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	padding-bottom: .5rem;
 }
 
 .card-list {

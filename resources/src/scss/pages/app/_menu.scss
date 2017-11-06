@@ -107,3 +107,36 @@
 	text-align: left;
 	font-weight: $normal;
 }
+
+.recently-searches {
+	padding: 0 1rem;
+	&__title {
+		text-align: left;
+		color: #fff;
+		margin-bottom: .5rem;
+	}
+
+	&__list {
+		.nav-list__link {
+			padding: .5rem 1rem;
+			color: $gray;
+			background-color: lighten($black, 8%);
+			transition: all .1s;
+
+			&:hover {
+				background-color: darken($black, 4%);
+			}
+		}
+	}
+}
+
+.see-all {
+	color: #acacac;
+	padding: .5rem 0;
+	display: block;
+	cursor: pointer;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}

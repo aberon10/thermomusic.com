@@ -16,6 +16,8 @@ import Music from './sections/Music/index';
 import Playlist from './sections/Playlist/index';
 import Page404 from './sections/Page404/index';
 import Favorites from './sections/Favorites/index';
+import Finder from './components/Finder/index';
+import ResultBox from './components/Finder/ResultBox';
 
 const routes = [
 	{
@@ -90,6 +92,8 @@ class App extends React.Component {
 				<Player/>
 				<FloatingPlayer/>
 				<Queue/>
+				<Finder/>
+				<ResultBox/>
 				<MenuPopUp/>
 				<ModalForm/>
 			</div>
