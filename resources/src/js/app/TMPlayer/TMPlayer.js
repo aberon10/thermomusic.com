@@ -4,6 +4,7 @@
 import TMPlayerElement from './TMPlayerElement';
 import RangeSlider from './RangeSlider';
 import PlaybackQueue from '../PlaybackQueue/PlaybackQueue';
+import Song from '../Music/Song';
 
 // Components
 import Queue from '../../components/Queue/index';
@@ -13,6 +14,7 @@ import { timeFormat } from '../utils/Utils';
 
 // config
 import Config from '../../config';
+import Music from '../../sections/Music/index';
 
 const formatAudio = ['audio/mpeg', 'audio/ogg'];
 
@@ -41,6 +43,11 @@ export default class TMPlayer {
 		TMPlayer.audio.type = formatAudio[0];
 		TMPlayer.playPause();
 		TMPlayerElement.updateDataOfTheCurrentSongInPlayer();
+
+		// TODO:
+		// Incrementar el contador de la canción
+		Song.increaseCounter(PlaybackQueue.tracks[PlaybackQueue.indexTrack].id);
+
 	}
 	static isPaused() {
 		return TMPlayer.audio.paused;

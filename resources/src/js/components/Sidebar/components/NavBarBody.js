@@ -23,7 +23,7 @@ const links = [
 		name: 'Recomendados'
 	},
 	{
-		url: '/top',
+		url: '/music/top',
 		name: 'Top 10'
 	}
 ];

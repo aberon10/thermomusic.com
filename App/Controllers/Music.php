@@ -145,4 +145,39 @@ class Music extends Controller {
 
 		\App\Controllers\Error::error_404();
 	}
+
+	public static function top() {
+		parent::checkStatus();
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			header('Content-Type: application/json; charset=UTF-8');
+			$response = array();
+
+			// Top 10
+			$track = new Track;
+			$response['data'] = $track->get_the_most_popular();
+
+			$user = new User;
+            $user->user = Session::get('username');
+			$user_data = $user->get_user_by_name();
+
+			// Favorites
+			$favorite = new Favorite();
+			$favorite->id_user = $user_data['id_usuario'];
+			$response['favorites'] = $favorite->get_favorites_user();
+
+			echo json_encode($response);
+			exit();
+		} else if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+			try {
+            	View::setData('title', getenv('APP_NAME'));
+				View::render('sections/user');
+				exit();
+			} catch (\Exception $e) {
+				exit($e->getMessage());
+			}
+		}
+		\App\Controllers\Error::error_404();
+	}
+
 }

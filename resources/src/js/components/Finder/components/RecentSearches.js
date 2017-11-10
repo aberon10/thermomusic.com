@@ -46,13 +46,12 @@ class RecentSearches extends React.Component {
 		let element = null;
 
 		if (searches) {
-			searches = JSON.parse(searches);
 			let items = [];
 
-			searches.searches.forEach((element, index) => {
+			JSON.parse(searches).forEach((element, index) => {
 				items.push(
 					<li className="nav-list__item" key={index}>
-						<Link to="#" className="nav-list__link" onClick={executeSearch}>{element}</Link>
+						<Link to="#" className="nav-list__link" onClick={executeSearch}>{element.search}</Link>
 					</li>
 				);
 			});
@@ -64,6 +63,8 @@ class RecentSearches extends React.Component {
 				</ul>
 				<span className="see-all" onClick={clearHistory}>Limpiar historial</span>
 			</div>;
+		} else {
+			document.getElementById('panel-message').innerHTML = 'Buscar pistas, artistas o albums.';
 		}
 		return element;
 	}

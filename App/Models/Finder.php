@@ -14,7 +14,7 @@ class Finder {
 	public $filter;
 	public $filter_value;
 	public $entitie;
-	const  LIMIT = 4;
+	const  LIMIT = 2;
 
 	public function find_artist() {
 		try {
@@ -73,23 +73,50 @@ class Finder {
 		}
 	}
 
+	public function filter_albums_by_artist() {
+		try {
+    		$connection = PDOConnection::connect();
+			$query = 'CALL sp_filter_albums_by_artist(:genre, :artist, :year)';
+			$stmt = $connection->prepare($query);
+			$stmt->bindParam(':genre', $this->filter_value);
+			$stmt->bindParam(':artist', $this->searched_word);
+			$stmt->bindParam(':year', $this->year);
+			$stmt->execute();
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		} catch (\PDOException $e) {
+			echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+		}
+	}
+
+	public function filter_songs_by_artist() {
+		try {
+    		$connection = PDOConnection::connect();
+			$query = 'CALL sp_filter_songs_by_artist(:genre, :artist, :year)';
+			$stmt = $connection->prepare($query);
+			$stmt->bindParam(':genre', $this->filter_value);
+			$stmt->bindParam(':artist', $this->searched_word);
+			$stmt->bindParam(':year', $this->year);
+			$stmt->execute();
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+		} catch (\PDOException $e) {
+			echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+		}
+	}
+
 	public function find() {
 		try {
 			if ($this->filter == 'genre') {
-
-				// TODO:
-				// Finalizar la búsqueda avanzada
 				if ($this->entitie == 'artist') {
 					return array('data' => $this->filter_artists_by_genre());
 				} else if ($this->entitie == 'album') {
-					// return array('data' => $this->filter_albums_by_genre());
+					return array('data' => $this->filter_albums_by_artist());
 				} else if ($this->entitie == 'song') {
-					// return array('data' => $this->filter_songs_by_genre());
+					return array('data' => $this->filter_songs_by_artist());
 				} else {
 					return array(
-						'artists' => $this->filter_artists_by_genre(),
-						'albums' => null,
-						'songs' => null
+						'artists' => array_slice($this->filter_artists_by_genre(), 0, self::LIMIT),
+						'albums' => array_slice($this->filter_albums_by_artist(), 0, self::LIMIT),
+						'songs' => array_slice($this->filter_songs_by_artist(), 0, self::LIMIT)
 					);
 				}
 			} else {

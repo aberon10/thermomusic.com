@@ -38,14 +38,13 @@ class Finder extends Controller {
 			$finder->filter = null;
 			$finder->entitie = $data['entitie'] ?? null;
 
-			// TODO:
 			// Compruebar si se trata de una búsqueda avanzada
-			if (preg_match($filters['genre'], $searched_word, $matchs)) {
+			if (preg_match($filters['genre'], $searched_word, $matches)) {
 				$finder->filter = 'genre';
-				$finder->filter_value = trim($matchs['genre']);
-				$finder->searched_word = array_key_exists('artist', $matchs) ? trim($matchs['artist']) : '';
+				$finder->filter_value = trim($matches['genre']);
+				$finder->searched_word = array_key_exists('artist', $matches) ? trim($matches['artist']) : '';
 			} else {
-				$finder->searched_word = str_replace(' ', '', $searched_word);
+				$finder->searched_word = trim($searched_word);
 			}
 
 			$finder->year = ($account == \Config\USER_PREMIUM) ? date('Y') : date('Y') - 1;

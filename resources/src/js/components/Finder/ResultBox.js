@@ -30,6 +30,11 @@ class ResultBox extends React.Component {
 	}
 
 	static resetState() {
+		let navBar = document.getElementById('nav-bar-container');
+		if (navBar.classList.contains('nav-bar-visible')) {
+			navBar.classList.remove('nav-bar-visible');
+		}
+
 		this.setState({
 			visible: false,
 			element: null,
@@ -68,11 +73,11 @@ class ResultBox extends React.Component {
 
 		if (response && response.data.data.length) {
 			if (response.entitie === 'artist') {
-				element = <Artist artists={response.data.data} seeAll='false'/>;
+				element = <Artist artists={response.data.data}/>;
 			} else if (response.entitie === 'album') {
-				element = <Album albums={response.data.data}  seeAll='false'/>;
+				element = <Album albums={response.data.data} />;
 			} else if (response.entitie === 'song') {
-				element = <Song songs={response.data.data}  seeAll='false'/>;
+				element = <Song songs={response.data.data} />;
 			}
 		}
 

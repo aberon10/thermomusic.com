@@ -18,6 +18,7 @@ import Page404 from './sections/Page404/index';
 import Favorites from './sections/Favorites/index';
 import Finder from './components/Finder/index';
 import ResultBox from './components/Finder/ResultBox';
+import Top from './sections/Top/index';
 
 const routes = [
 	{
@@ -69,6 +70,11 @@ const routes = [
 		path: '/playlist/index/:id',
 		exact: false,
 		component: Playlist
+	},
+	{
+		path: '/music/top',
+		exact: false,
+		component: Top
 	},
 	{
 		path: null,

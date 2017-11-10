@@ -238,7 +238,14 @@
         text-align: center;
         margin: 0;
         padding: .8rem 0 0;
-    }
+	}
+	.form-control {
+		height: 64px;
+
+		&::focus {
+			background-color: blue;
+		}
+	}
 }
 
 .album-info__name {

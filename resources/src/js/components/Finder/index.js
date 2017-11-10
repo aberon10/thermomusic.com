@@ -3,10 +3,13 @@
 // Dependencies
 import React from 'react';
 
+import Ajax from '../../Libs/Ajax';
+
+import changeThePositionOfElementsInArray from './utils';
+
 // Components
 import Modal from '../Modal/index';
 import Header from './components/Header';
-import Ajax from '../../Libs/Ajax';
 import Artist from './components/Artist';
 import Album from './components/Album';
 import Song from './components/Song';
@@ -36,7 +39,6 @@ class Finder extends React.Component {
 		Song.resetState();
 		RecentSearches.resetState();
 
-		// TODO:
 		// Busqueda Normal
 		// Busqueda Avanzada
 		if (searchedWord) {
@@ -47,13 +49,20 @@ class Finder extends React.Component {
 				if (searches) {
 					searches = JSON.parse(searches);
 				} else {
-					searches = {searches: []};
+					searches = [];
 				}
 
-				if (searches.searches.indexOf(searchedWord) === -1) {
-					searches.searches.push(searchedWord);
-					sessionStorage.setItem('searches', JSON.stringify(searches));
+				searches = changeThePositionOfElementsInArray(searches);
+
+				if (searches.length === 5) {
+					searches.pop();
 				}
+
+				searches.unshift({
+					'search': searchedWord,
+					'date': Date.now()
+				});
+				sessionStorage.setItem('searches', JSON.stringify(searches));
 			}
 
 			Ajax.post({
@@ -66,19 +75,27 @@ class Finder extends React.Component {
 				Finder.createContent(response);
 			}).catch((error) => {});
 		} else {
+			document.getElementById('panel-message').innerHTML = '';
 			RecentSearches.updateState();
 		}
 	}
 
 	static createContent(response) {
+		const panelMessage = document.getElementById('panel-message');
 		const artists = response.data.artists;
 		const albums = response.data.albums;
 		const songs = response.data.songs;
 
-		sessionStorage.setItem('seeAll', true);
-		Artist.updateState(artists);
-		Album.updateState(albums);
-		Song.updateState(songs);
+		panelMessage.innerHTML = '';
+
+		if (artists.length || albums.length || songs.length) {
+			sessionStorage.setItem('seeAll', true);
+			Artist.updateState(artists);
+			Album.updateState(albums);
+			Song.updateState(songs);
+		} else {
+			panelMessage.innerHTML = 'No hay resultados disponibles.';
+		}
 	}
 	static resetState() {
 		document.getElementById('search').value = '';
@@ -95,6 +112,7 @@ class Finder extends React.Component {
 
 	static hide(e) {
 		if (e.target.id === 'modal-finder' || e.target.id === 'close-finder') {
+			document.getElementById('panel-message').innerHTML = 'Buscar pistas, artistas o albums.';
 			Finder.resetState();
 		}
 	}
@@ -111,6 +129,7 @@ class Finder extends React.Component {
 						<Album albums={null}/>
 						<Song songs={null}/>
 						<RecentSearches />
+						<p className="text-center" style={{ color: '#fff' }} id="panel-message">Buscar pistas, artistas o albums.</p>
 					</div>
 				</div>
 			</Modal>

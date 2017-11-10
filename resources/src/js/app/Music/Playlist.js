@@ -12,6 +12,8 @@ import {
 } from '../../components/ModalForm/utils';
 import { displayNotification, stringFromCharCode } from '../utils/Utils';
 
+import { substr } from '../../components/utils';
+
 // components
 import Playlist from '../../sections/Playlist/index';
 import MenuPopUp from '../../components/MenuPopUp/index';
@@ -101,7 +103,7 @@ export default class AppPlaylist {
 					</a>
 				</div>
 				<div className="cover-artist__footer">
-					<span className="cover-artist-name">{stringFromCharCode(data.name)}</span>
+					<span className="cover-artist-name">{substr(stringFromCharCode(data.name), 13)}</span>
 				</div>
 			</div>
 		);

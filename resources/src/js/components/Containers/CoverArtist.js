@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 // Config
 import Config from '../../config';
 
+import { substr } from '../../components/utils';
+
 class CoverArtist extends React.Component {
 	constructor(props) {
 		super(props);
@@ -34,14 +36,14 @@ class CoverArtist extends React.Component {
 			if (item.album) {
 				coverArtistFooter = (
 					<div className="album-info">
-						<h3 className="album-info__name">{item.name}</h3>
-						<p className="album-info__artist">{item.artist}</p>
+						<h3 className="album-info__name">{substr(item.name, 20)}</h3>
+						<p className="album-info__artist">{substr(item.artist, 20)}</p>
 						<p className="album-info__year">{item.albumInfo}</p>
 					</div>
 				);
 			} else {
 				coverArtistFooter = (
-					<Link to={item.url} className="cover-artist-name">{item.name}</Link>
+					<Link to={item.url} className="cover-artist-name">{substr(item.name, 20)}</Link>
 				);
 			}
 

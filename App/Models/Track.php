@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Config;
 use PDO;
 use App\Database\PDOConnection;
 use App\Models\BaseClass;
@@ -42,6 +43,31 @@ class Track
 			$stmt->bindValue(':id_track', $this->id);
 			$stmt->execute();
 			return $stmt->fetch(\PDO::FETCH_ASSOC);
+		} catch (\PDOException $e) {
+			echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+		}
+	}
+
+	public function increase_counter() {
+		try {
+    		$connection = PDOConnection::connect();
+			$query = 'CALL sp_increase_counter_of_song(:id_track)';
+			$stmt = $connection->prepare($query);
+			$stmt->bindValue(':id_track', $this->id);
+			return $stmt->execute();
+		} catch (\PDOException $e) {
+			echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+		}
+	}
+
+	public function get_the_most_popular() {
+		try {
+    		$connection = PDOConnection::connect();
+			$query = 'CALL sp_get_the_most_popular_song(:top)';
+			$stmt = $connection->prepare($query);
+			$stmt->bindValue(':top', \Config\TOP);
+			$stmt->execute();
+			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 		} catch (\PDOException $e) {
 			echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
 		}
