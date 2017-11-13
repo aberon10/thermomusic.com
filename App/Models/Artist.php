@@ -13,6 +13,7 @@ class Artist
 	private $id_artist;
 	private $id_genre;
 	private $name_artist;
+	private $year;
 
 	public function __construct($id_artist= '', $id_genre = '', $name_artist = '') {
 		$this->id_artist = $id_artist;
@@ -49,9 +50,10 @@ class Artist
 	public function getMostPlayedTrackByArtist() {
 		try {
     		$connection = PDOConnection::connect();
-			$query = 'CALL sp_most_played_tracks_by_artist(:id_artist)';
+			$query = 'CALL sp_most_played_tracks_by_artist(:id_artist, :year)';
 			$stmt = $connection->prepare($query);
 			$stmt->bindValue(':id_artist', $this->id_artist);
+			$stmt->bindValue(':year', $this->year);
 			$stmt->execute();
 			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 		} catch (\PDOException $e) {

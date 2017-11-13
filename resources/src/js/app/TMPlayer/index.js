@@ -8,6 +8,8 @@ import TMPlayer from './TMPlayer';
 import PlaybackQueue from '../PlaybackQueue/PlaybackQueue';
 import TMPlayerElement from './TMPlayerElement';
 
+import { displayNotification } from '../utils/Utils';
+
 function getDataOfTracksAndSetIndexTrack(tracks, idNextTrack) {
 	let dataTracks = [];
 
@@ -46,6 +48,10 @@ export default function prepareSong(e) {
 			Queue.updateQueue();
 		}
 
-		TMPlayer.init();
+		if (!PlaybackQueue.adv) {
+			TMPlayer.init();
+		} else {
+			displayNotification('Actualiza a Premium para no escuchar más esta publicidad.');
+		}
 	}
 }

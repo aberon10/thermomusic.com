@@ -8,6 +8,7 @@ use \Config;
 use \Core\View;
 use \Core\Controller;
 use \App\Models;
+use \App\Models\Advertising;
 use \App\Libs\Validate;
 use \App\Libs\FlashValue;
 use \App\Libs\CsrfToken;
@@ -17,12 +18,26 @@ use function \App\Libs\get_template_header;
 use function \App\Libs\get_template_footer;
 use function \App\Libs\get_template_welcome;
 
-class User extends Controller 
+class User extends Controller
 {
 	public static function index() {
 		try {
 			Session::set('csrf', CsrfToken::create());
 			parent::checkStatus(['csrf' => Session::get('csrf')]);
+
+			// get data user
+			$user = new \App\Models\User;
+			$user->user = trim(strtolower(Session::get('username')));
+			$data_user = $user->get_user_by_name();
+
+			Session::set('account', $data_user['id_tipo_usuario']);
+
+			if ($data_user['id_tipo_usuario'] != Config\USER_PREMIUM) {
+				$adv = new Advertising;
+				$adv->type_advertising = Config\ADV_IMAGE;
+				Session::set('adv', $adv->get());
+			}
+
 			View::setData('title', getenv('APP_NAME').' | Perfil');
 			View::render('sections/user');
 		} catch (\Exception $e) {
@@ -224,17 +239,17 @@ class User extends Controller
 							$image_user->id_user = $id_user;
 							$src_img = $image_user->getImage();
 
-							FlashValue::delete('value_username');
-							FlashValue::delete('error_username');
-							FlashValue::delete('error_password');
-							FlashValue::delete('error_login');
-
 							// create session user
 							Session::destroy();
 							Session::set('username', trim(strtolower($_POST['username'])));
 							Session::set('src_img', getenv('APP_URL').'/'.$src_img);
 							Session::set('timeout', time());
 							Session::regenerateSession(true);
+
+							FlashValue::delete('value_username');
+							FlashValue::delete('error_username');
+							FlashValue::delete('error_password');
+							FlashValue::delete('error_login');
 
 							header('location: /user/index');
 							exit();
@@ -372,6 +387,27 @@ class User extends Controller
 				Session::destroy();
 				header('location: /home/login');
 				exit();
+			}
+		}
+		\App\Controllers\Error::error_404();
+	}
+
+	public static function get_data() {
+		parent::checkStatus();
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			header('Content-type: application/json;charset=utf8');
+			try {
+				$user = new \App\Models\User;
+				$user->user = Session::get('username');
+				$data_user = $user->get_user_by_name();
+
+				echo json_encode(array(
+					'data' => $data_user,
+					'img' => Session::get('src_img')
+				));
+				exit();
+			} catch (\Exception $e) {
+				exit($e->getMessage());
 			}
 		}
 		\App\Controllers\Error::error_404();

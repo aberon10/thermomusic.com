@@ -33,3 +33,7 @@ const TOP = 10;
 
 // Planes de pago
 const PAYMENT_PLANS = array('5.99');
+
+// Tipos de Publicidad
+const ADV_AUDIO = 1;
+const ADV_IMAGE = 2;

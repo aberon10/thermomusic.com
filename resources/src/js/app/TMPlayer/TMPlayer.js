@@ -5,6 +5,7 @@ import TMPlayerElement from './TMPlayerElement';
 import RangeSlider from './RangeSlider';
 import PlaybackQueue from '../PlaybackQueue/PlaybackQueue';
 import Song from '../Music/Song';
+import Advertising from '../Advertising';
 
 // Components
 import Queue from '../../components/Queue/index';
@@ -14,7 +15,6 @@ import { timeFormat } from '../utils/Utils';
 
 // config
 import Config from '../../config';
-import Music from '../../sections/Music/index';
 
 const formatAudio = ['audio/mpeg', 'audio/ogg'];
 
@@ -33,21 +33,26 @@ export default class TMPlayer {
 		TMPlayer.currentVolume = 1;
 		TMPlayerElement.loadAllElementsOfThePlayer();
 		TMPlayer.addEventsToTheButtons();
-		TMPlayer.start();
 		TMPlayer.addEventsAudio();
 		TMPlayerElement.showPlayer();
 		RangeSlider();
+		Advertising.get();
+		TMPlayer.start();
 	}
 	static start() {
-		TMPlayer.audio.src = Config.urlResource + '/' + PlaybackQueue.tracks[PlaybackQueue.indexTrack].src;
+		if (PlaybackQueue.counter !== 0 && PlaybackQueue.counter % 2 === 0 && Advertising.audios.length > 0) {
+			Advertising.index = Math.floor((Math.random() * Advertising.audios.length));
+			TMPlayer.audio.src = Config.urlResource + '/' + Advertising.audios[Advertising.index].src;
+			PlaybackQueue.adv = true;
+			PlaybackQueue.counter -= 2;
+		} else {
+			TMPlayer.audio.src = Config.urlResource + '/' + PlaybackQueue.tracks[PlaybackQueue.indexTrack].src;
+			Song.increaseCounter(PlaybackQueue.tracks[PlaybackQueue.indexTrack].id);
+			PlaybackQueue.counter++;
+		}
 		TMPlayer.audio.type = formatAudio[0];
 		TMPlayer.playPause();
 		TMPlayerElement.updateDataOfTheCurrentSongInPlayer();
-
-		// TODO:
-		// Incrementar el contador de la canción
-		Song.increaseCounter(PlaybackQueue.tracks[PlaybackQueue.indexTrack].id);
-
 	}
 	static isPaused() {
 		return TMPlayer.audio.paused;
@@ -60,9 +65,7 @@ export default class TMPlayer {
 				TMPlayerElement.changeTheClassOfTheMainPlayButton();
 				TMPlayerElement.changeTheClassOfTheSecondaryPlayButton();
 				TMPlayerElement.changeTheClassOfTheTrackPlaybackButton();
-			}).catch((error) => {
-				console.log(error);
-			});
+			}).catch((error) => {});
 		} else {
 			TMPlayer.audio.pause();
 			TMPlayerElement.changeTheClassOfTheMainPauseButton();
@@ -95,26 +98,35 @@ export default class TMPlayer {
 
 	static nextTrack() {
 		if (this === TMPlayer.audio) {
+			if (PlaybackQueue.adv) {
+				PlaybackQueue.adv = false;
+				PlaybackQueue.decreaseIndex();
+			}
+
 			if (TMPlayer.random) {
 				PlaybackQueue.indexTrack = Math.floor((Math.random() * PlaybackQueue.tracks.length));
 			} else if (!TMPlayer.repeat) {
 				PlaybackQueue.increaseIndex();
 			}
-		} else if (this === TMPlayerElement.elements.next) {
+		} else if (this === TMPlayerElement.elements.next && !PlaybackQueue.adv) {
 			PlaybackQueue.increaseIndex();
 		}
 
-		TMPlayerElement.changeClassOfTheCurrentTrack();
-		TMPlayer.start();
+		if (!PlaybackQueue.adv) {
+			TMPlayerElement.changeClassOfTheCurrentTrack();
+			TMPlayer.start();
+		}
 	}
 
 	static previousTrack() {
-		if (this === TMPlayerElement.elements.prev) {
-			PlaybackQueue.decreaseIndex();
-		}
+		if (!PlaybackQueue.adv) {
+			if (this === TMPlayerElement.elements.prev) {
+				PlaybackQueue.decreaseIndex();
+			}
 
-		TMPlayerElement.changeClassOfTheCurrentTrack();
-		TMPlayer.start();
+			TMPlayerElement.changeClassOfTheCurrentTrack();
+			TMPlayer.start();
+		}
 	}
 
 	static randomTrack() {
@@ -130,7 +142,7 @@ export default class TMPlayer {
 	}
 
 	static jumpsOnProgressBar(e) {
-		if (!TMPlayer.audio.ended) {
+		if (!TMPlayer.audio.ended && !PlaybackQueue.adv) {
 			let width = null;
 
 			if (e.target === TMPlayerElement.elements.primaryBar || e.target.parentNode === TMPlayerElement.elements.primaryBar) {

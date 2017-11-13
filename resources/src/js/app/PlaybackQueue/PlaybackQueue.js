@@ -111,3 +111,5 @@ export default class PlaybackQueue {
 
 PlaybackQueue.tracks = null;
 PlaybackQueue.indexTrack = 0;
+PlaybackQueue.counter = 0;
+PlaybackQueue.adv = false;

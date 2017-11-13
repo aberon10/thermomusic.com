@@ -8,6 +8,7 @@ import PlaybackQueue from '../PlaybackQueue/PlaybackQueue';
 
 // config
 import Config from '../../config';
+import Advertising from '../Advertising';
 
 export default class TMPlayerElement {
 	static loadAllElementsOfThePlayer() {
@@ -178,10 +179,17 @@ export default class TMPlayerElement {
 
 	}
 	static updateDataOfTheCurrentSongInPlayer() {
-		TMPlayerElement.setTotalTime(PlaybackQueue.tracks[PlaybackQueue.indexTrack].duration);
-		TMPlayerElement.setNameTrack(PlaybackQueue.tracks[PlaybackQueue.indexTrack].trackName);
-		TMPlayerElement.setNameArtist(PlaybackQueue.tracks[PlaybackQueue.indexTrack].artist);
-		TMPlayerElement.setImageAlbum(Config.urlResource + '/' + PlaybackQueue.tracks[PlaybackQueue.indexTrack].srcAlbum);
+		if (PlaybackQueue.adv) {
+			TMPlayerElement.setTotalTime(Advertising.audios[Advertising.index].duracion);
+			TMPlayerElement.setNameTrack(Advertising.audios[Advertising.index].nombre_publicidad);
+			TMPlayerElement.setNameArtist('Publicidad');
+			TMPlayerElement.setImageAlbum(Config.urlResource + '/bi/ad.jpg');
+		} else {
+			TMPlayerElement.setTotalTime(PlaybackQueue.tracks[PlaybackQueue.indexTrack].duration);
+			TMPlayerElement.setNameTrack(PlaybackQueue.tracks[PlaybackQueue.indexTrack].trackName);
+			TMPlayerElement.setNameArtist(PlaybackQueue.tracks[PlaybackQueue.indexTrack].artist);
+			TMPlayerElement.setImageAlbum(Config.urlResource + '/' + PlaybackQueue.tracks[PlaybackQueue.indexTrack].srcAlbum);
+		}
 	}
 
 	static changeTheClassOfTheButtonVolume() {

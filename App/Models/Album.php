@@ -27,9 +27,10 @@ class Album
 	public function getAlbumByArtist() {
 		try {
     		$connection = PDOConnection::connect();
-			$query = 'CALL sp_get_album_by_artist(:id_artist)';
+			$query = 'CALL sp_get_album_by_artist(:id_artist, :year)';
 			$stmt = $connection->prepare($query);
 			$stmt->bindValue(':id_artist', $this->id_artist);
+			$stmt->bindValue(':year', $this->year);
 			$stmt->execute();
 			return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 		} catch (\PDOException $e) {
@@ -40,10 +41,6 @@ class Album
 	public function getAlbumById() {
 		try {
     		$connection = PDOConnection::connect();
-    		/*
-    			TODO: 
-    			Recordar traer los `likes` de cada canción y también si se encuentra en favoritas del usuario.
-    		 */
 			$query = 'CALL sp_get_album_by_id(:id_album)';
 			$stmt = $connection->prepare($query);
 			$stmt->bindValue(':id_album', $this->id_album);

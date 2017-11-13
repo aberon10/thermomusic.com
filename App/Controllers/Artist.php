@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Config;
 use Core\View;
 use Core\Controller;
 use App\Libs\CsrfToken;
@@ -69,7 +70,7 @@ class Artist extends Controller
 			header('Content-Type: application/json;charset=utf8');
 			$data = (array) json_decode(file_get_contents('php://input'));
 
-			parent::checkStatus($data);
+			// parent::checkStatus($data);
 
 			$response = array(
 				'data' => null,
@@ -108,6 +109,7 @@ class Artist extends Controller
 					// Recupero los albumes
 					$album = new \App\Models\Album;
 					$album->id_artist = $id_artist;
+					$album->year = \Config\USER_PREMIUM == Session::get('account') ? date('Y') : date('Y') - 1;
 					$albums = $album->getAlbumByArtist();
 
 					if (count($albums) > 0) {
@@ -121,6 +123,7 @@ class Artist extends Controller
 					}
 
 					// Recupero las canciones más escuchadas de un artista
+					$artist->year = \Config\USER_PREMIUM == Session::get('account') ? date('Y') : date('Y') - 1;
 					$most_played_tracks = $artist->getMostPlayedTrackByArtist();
 					if (count($most_played_tracks) > 0) {
 						array_push($result, $most_played_tracks);
