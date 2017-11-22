@@ -9,7 +9,9 @@ module.exports = {
 	},
 	context: __dirname,
 	entry: {
-		app: './resources/src/js/index.js'
+		app: './resources/src/js/index.js',
+		suscription: './resources/src/js/app/suscription.js',
+		animations: './resources/src/js/app/web-animations.js'
 	},
 	output: {
 		path: path.resolve(__dirname, 'public/js'),

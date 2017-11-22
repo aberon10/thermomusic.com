@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 require APP_PATH.'/Libs/TplMails.php';
+require APP_PATH.'/Utils/Utils.php';
 
 use \Config;
 use \Core\View;
@@ -13,10 +14,15 @@ use \App\Libs\Validate;
 use \App\Libs\FlashValue;
 use \App\Libs\CsrfToken;
 use \App\Libs\Session;
+use \App\Libs\Sanitize;
+use \App\Libs\ValidateCreditCard;
+use function \App\Utils\days_in_month;
+use function \App\Utils\compare_dates;
 use function \App\Libs\get_template_head;
 use function \App\Libs\get_template_header;
 use function \App\Libs\get_template_footer;
 use function \App\Libs\get_template_welcome;
+use function \App\Libs\get_template_suscription;
 
 class User extends Controller
 {
@@ -410,6 +416,108 @@ class User extends Controller
 				exit($e->getMessage());
 			}
 		}
+		\App\Controllers\Error::error_404();
+	}
+
+	public static function suscription() {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			header('Content-Type: application/json;charset=UTF-8');
+			$data = json_decode(file_get_contents('php://input'), true);
+			$response = array(
+				'success' => true,
+				'username' => '',
+				'numberCard' => '',
+				'securityCode' => '',
+				'expirationDate' => '',
+				'message' => '',
+			);
+
+			if (isset($data)) {
+				$username = $data['user'] ?? '';
+				$number_card = $data['numberCard'] ? Sanitize::filter_int($data['numberCard']) : '';
+				$security_code = $data['securityCode'] ? Sanitize::filter_int($data['securityCode']) : '';
+				$expiration_month = $data['expirationMonth'] ? Sanitize::filter_int($data['expirationMonth']) : '';
+				$expiration_year = $data['expirationYear'] ? Sanitize::filter_int($data['expirationYear']) : '';
+
+				if (empty($username)) {
+					$response['username'] = 'Campo Requerido';
+					$response['success'] = false;
+				}
+
+				if (empty($number_card) || !ValidateCreditCard::validateFormatCreditCard($number_card) ||
+					!ValidateCreditCard::calculateLuhn($number_card)) {
+					$response['numberCard'] = 'Por favor, ingrese un número de tarjeta valido.';
+					$response['success'] = false;
+				}
+
+				if (empty($security_code) || !preg_match('/^([0-9]{3,4})$/', $security_code)) {
+					$response['securityCode'] = 'Por favor, ingrese un código valido.';
+					$response['success'] = false;
+				}
+
+				// fecha de vencimiento
+				if (empty($expiration_month) || empty($expiration_year)) {
+					$response['expirationDate'] = 'Campo Requerido';
+					$response['success'] = false;
+				} else {
+					$expiration_date = days_in_month($expiration_month, $expiration_year).'-'.$expiration_month.'-'.$expiration_year;
+					$current_date =  date('t').'-'.date('m').'-'.date('Y');
+
+					if (compare_dates($current_date, $expiration_date) > 0) {
+						$response['expirationDate'] = 'La fecha de vencimiento expiro.';
+						$response['success'] = false;
+					}
+				}
+
+				if ($response['success']) {
+					// Compruebo si existe el usuario y si este no se encuentra suscripto.
+					$user = new \App\Models\User;
+					$user->user = $username;
+					$data_user = $user->get_user_by_name();
+
+					if (!empty($data_user)) {
+						if ($data_user['id_tipo_usuario'] != Config\USER_PREMIUM) {
+							$user->id = $data_user['id_usuario'];
+							$user->id_type_user = Config\USER_PREMIUM;
+							if ($user->update_account()) {
+
+								$to = $data_user['correo'];
+								$name = !empty($data_user['nombre']) ? $data_user['nombre'] : $username;
+								$subject = 'Cuenta Premium';
+								$alt_message = 'Hola, '. $name.' gracias por pasarte a Premium.';
+								$link = 'http://thermomusic.com/home/login';
+
+								$content_head = get_template_head();
+								$content_header = get_template_header();
+								$content_body = get_template_suscription($name, $link);
+								$content_footer = get_template_footer();
+								$content = $content_head.$content_header.$content_body.$content_footer;
+
+								$mail = new \App\Libs\Mail($to, $name, $subject, $content, $alt_message);
+
+								if (!$mail->send()) {
+									$response['message'] = 'Lo sentimos, ocurrio un error. Contacta a nuestro equipo de soporte para más ayuda.';
+									$response['success'] = false;
+								} else {
+									$response['message'] = 'Suscripción realizada con éxito.
+											En caso que tengas una sesión activa, deberas iniciar una nueva para poder activar lo cambios.';
+								}
+							}
+						} else {
+							$response['username'] = 'El usuario ya se esta suscripto.';
+							$response['success'] = false;
+						}
+					} else {
+						$response['username'] = 'El usuario no existe.';
+						$response['success'] = false;
+					}
+				}
+			}
+
+			echo json_encode($response, JSON_FORCE_OBJECT);
+			exit();
+		}
+
 		\App\Controllers\Error::error_404();
 	}
 }

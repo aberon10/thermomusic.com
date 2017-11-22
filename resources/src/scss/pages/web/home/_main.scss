@@ -21,7 +21,7 @@
 	}
 }
 .feactures-app__header {
-	padding: 1rem 0;	
+	padding: 1rem 0;
 }
 
 .feactures-app__body {
@@ -54,7 +54,7 @@
 	@include from(tablet) {
 		max-height: 400px;
 		overflow: hidden;
-	}	
+	}
 
 	@include from(tablet) {
 		max-height: 600px;
@@ -72,10 +72,10 @@
 			font-weight: $normal;
 			font-family: 'Raleway', Arial, sans-serif;
 			@include from(tablet) {
-				font-size: 2vw;	
+				font-size: 2vw;
 			}
 			@include from(web) {
-				font-size: 1.2vw;	
+				font-size: 1.2vw;
 			}
 		}
 		.button {
@@ -85,14 +85,14 @@
 		@include from(tablet) {
 			top: 6rem;
 			h1 {
-				font-size: 4vw; 
-			}	
+				font-size: 4vw;
+			}
 		}
 		@include from(web) {
 			top: 10rem;
 			h1 {
-				font-size: 4vw; 
-			}	
+				font-size: 4vw;
+			}
 
 			.buttons-group {
 				justify-content: center;
@@ -178,8 +178,8 @@
 	}
 }
 
-.index-wrapper__left, 
-.index-wrapper__right { 
+.index-wrapper__left,
+.index-wrapper__right {
 	display: flex;
 	justify-content: center;
 	padding: 1rem;
@@ -205,4 +205,10 @@
 	@include from(web) {
 		font-size: 2vw;
 	}
+}
+
+.credits-cards {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }

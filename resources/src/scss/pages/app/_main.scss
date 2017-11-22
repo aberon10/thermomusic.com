@@ -53,8 +53,8 @@
 }
 
 .cover-artist {
-    transition: all .3s ease;
-
+    transition: all .2s ease;
+	border: 5px solid transparent;
     &.brightness-image {
         .cover-artist__header a {
             cursor: pointer;
@@ -64,7 +64,11 @@
                 filter: brightness(.2);
             }
         }
-    }
+	}
+
+	&.border {
+		border-color: $alice-dark;
+	}
 }
 
 .cover-artist__header {

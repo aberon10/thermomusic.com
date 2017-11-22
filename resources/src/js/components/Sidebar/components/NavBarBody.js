@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 
 // Components
 import NavListItems from './NavListItems';
-import RecentlyPlayed from './RecentlyPlayed';
 import { addClassModal } from '../../ModalForm/utils';
 
 const links = [
@@ -17,10 +16,6 @@ const links = [
 	{
 		url: '/music',
 		name: 'Tu Música'
-	},
-	{
-		url: '/recomended',
-		name: 'Recomendados'
 	},
 	{
 		url: '/music/top',

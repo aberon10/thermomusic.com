@@ -157,4 +157,17 @@ class User
     		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
     	}
 	}
+
+	public function update_account() {
+		try {
+			$connection = PDOConnection::connect();
+			$query = 'update usuario set id_tipo_usuario=:account where id_usuario=:id';
+			$stmt = $connection->prepare($query);
+    		$stmt->bindParam(':id', $this->id);
+    		$stmt->bindParam(':account', $this->id_type_user);
+			return $stmt->execute();
+    	} catch (\PDOException $e) {
+    		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+    	}
+	}
 }

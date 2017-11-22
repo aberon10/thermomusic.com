@@ -29,5 +29,4 @@ class Genre
 			echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
 		}
 	}
-
 }
