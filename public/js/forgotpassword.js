@@ -60,12 +60,12 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 290);
+/******/ 	return __webpack_require__(__webpack_require__.s = 293);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 290:
+/***/ 293:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77,66 +77,40 @@ var _Ajax2 = _interopRequireDefault(_Ajax);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var btnSubscribe = document.getElementById('btn-subscribe');
-var tableFree = document.getElementById('table-free');
-var containerFormSuscription = document.getElementById('container-form-suscription');
-var formSuscription = document.getElementById('form-suscription');
+window.addEventListener('DOMContentLoaded', function () {
+	document.getElementById('form-forgotpassword').addEventListener('submit', function (e) {
+		e.preventDefault();
+		var user = document.getElementById('username');
+		var message = document.getElementById('message');
+		var loadingCircle = document.querySelector('.loading-circle');
 
-btnSubscribe.addEventListener('click', function (e) {
-	e.preventDefault();
-	if (!tableFree.classList.contains('no-block')) {
-		tableFree.classList.add('no-block');
-		containerFormSuscription.classList.remove('no-block');
-	}
-});
+		message.innerHTML = '';
+		loadingCircle.classList.add('center');
+		loadingCircle.classList.add('turn');
 
-formSuscription.addEventListener('submit', function (e) {
-	e.preventDefault();
+		window.setTimeout(function () {
+			loadingCircle.className = 'loading-circle';
+			_Ajax2.default.post({
+				url: '/user/forgotpassword',
+				responseType: 'json',
+				data: { user: user.value }
+			}).then(function (response) {
+				if (response) {
+					message.className = '';
 
-	var user = document.getElementById('user');
-	var numberCard = document.getElementById('number-card');
-	var securityCode = document.getElementById('security-code');
-	var expirationMonth = document.getElementById('expiration-month');
-	var expirationYear = document.getElementById('expiration-year');
-	var expirationDateError = document.getElementById('expiration-date-error');
-	var message = document.getElementById('message');
-	var loadingCircle = document.querySelector('.loading-circle');
+					if (response.success === true) {
+						e.target.reset();
+						message.classList.add('color-green');
+					} else {
+						message.classList.add('color-red');
+					}
 
-	message.innerHTML = '';
-	loadingCircle.classList.add('center');
-	loadingCircle.classList.add('turn');
-
-	window.setTimeout(function () {
-		loadingCircle.className = 'loading-circle';
-		_Ajax2.default.post({
-			url: '/user/suscription',
-			responseType: 'json',
-			data: {
-				user: user.value,
-				numberCard: numberCard.value,
-				securityCode: securityCode.value,
-				expirationMonth: expirationMonth.value,
-				expirationYear: expirationYear.value
-			}
-		}).then(function (response) {
-			if (response) {
-				message.className = '';
-
-				if (response.success === true) {
-					e.target.reset();
-					message.classList.add('color-green');
-				} else {
-					message.classList.add('color-red');
+					message.innerHTML = response.msg;
+					user.nextElementSibling.innerHTML = response.user;
 				}
-
-				message.innerHTML = response.message;
-				user.nextElementSibling.innerHTML = response.username;
-				numberCard.nextElementSibling.innerHTML = response.numberCard;
-				securityCode.nextElementSibling.innerHTML = response.securityCode;
-				expirationDateError.innerHTML = response.expirationDate;
-			}
-		}).catch(function (error) {});
-	}, 2000);
+			}).catch(function (error) {});
+		}, 2000);
+	});
 });
 
 /***/ }),

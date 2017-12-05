@@ -60,12 +60,12 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 290);
+/******/ 	return __webpack_require__(__webpack_require__.s = 292);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 290:
+/***/ 292:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77,66 +77,52 @@ var _Ajax2 = _interopRequireDefault(_Ajax);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var btnSubscribe = document.getElementById('btn-subscribe');
-var tableFree = document.getElementById('table-free');
-var containerFormSuscription = document.getElementById('container-form-suscription');
-var formSuscription = document.getElementById('form-suscription');
+window.addEventListener('DOMContentLoaded', function () {
+	var form = document.getElementById('form-support');
+	form.addEventListener('submit', function (e) {
+		e.preventDefault();
+		var email = document.getElementById('support-email');
+		var name = document.getElementById('support-name');
+		var subject = document.getElementById('support-subject');
+		var message = document.getElementById('support-message');
+		var msg = document.getElementById('message');
+		var loadingCircle = document.querySelector('.loading-circle');
 
-btnSubscribe.addEventListener('click', function (e) {
-	e.preventDefault();
-	if (!tableFree.classList.contains('no-block')) {
-		tableFree.classList.add('no-block');
-		containerFormSuscription.classList.remove('no-block');
-	}
-});
+		msg.innerHTML = '';
+		loadingCircle.classList.add('center');
+		loadingCircle.classList.add('turn');
 
-formSuscription.addEventListener('submit', function (e) {
-	e.preventDefault();
-
-	var user = document.getElementById('user');
-	var numberCard = document.getElementById('number-card');
-	var securityCode = document.getElementById('security-code');
-	var expirationMonth = document.getElementById('expiration-month');
-	var expirationYear = document.getElementById('expiration-year');
-	var expirationDateError = document.getElementById('expiration-date-error');
-	var message = document.getElementById('message');
-	var loadingCircle = document.querySelector('.loading-circle');
-
-	message.innerHTML = '';
-	loadingCircle.classList.add('center');
-	loadingCircle.classList.add('turn');
-
-	window.setTimeout(function () {
-		loadingCircle.className = 'loading-circle';
-		_Ajax2.default.post({
-			url: '/user/suscription',
-			responseType: 'json',
-			data: {
-				user: user.value,
-				numberCard: numberCard.value,
-				securityCode: securityCode.value,
-				expirationMonth: expirationMonth.value,
-				expirationYear: expirationYear.value
-			}
-		}).then(function (response) {
-			if (response) {
-				message.className = '';
-
-				if (response.success === true) {
-					e.target.reset();
-					message.classList.add('color-green');
-				} else {
-					message.classList.add('color-red');
+		window.setTimeout(function () {
+			loadingCircle.className = 'loading-circle';
+			_Ajax2.default.post({
+				url: '/home/support',
+				responseType: 'json',
+				data: {
+					email: email.value,
+					name: name.value,
+					subject: subject.value,
+					message: message.value
 				}
+			}).then(function (response) {
+				if (response) {
+					msg.className = '';
 
-				message.innerHTML = response.message;
-				user.nextElementSibling.innerHTML = response.username;
-				numberCard.nextElementSibling.innerHTML = response.numberCard;
-				securityCode.nextElementSibling.innerHTML = response.securityCode;
-				expirationDateError.innerHTML = response.expirationDate;
-			}
-		}).catch(function (error) {});
-	}, 2000);
+					if (response.success === true) {
+						e.target.reset();
+						msg.classList.add('color-green');
+					} else {
+						msg.classList.add('color-red');
+					}
+
+					msg.innerHTML = response.msg;
+					email.nextElementSibling.innerHTML = response.email !== true ? response.email : '';
+					name.nextElementSibling.innerHTML = response.name !== true ? response.name : '';
+					subject.nextElementSibling.innerHTML = response.subject !== true ? response.subject : '';
+					message.innerHTML = response.message !== true ? response.message : '';
+				}
+			}).catch(function (error) {});
+		}, 2000);
+	});
 });
 
 /***/ }),

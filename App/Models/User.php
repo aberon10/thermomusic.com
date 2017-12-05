@@ -170,4 +170,22 @@ class User
     		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
     	}
 	}
+
+	public function reset_password() {
+		try {
+			$phass = new Phassword;
+			$hash_password = NULL;
+			if ($this->password != NULL) {
+				$hash_password = $phass->cryptPhass($this->password);
+			}
+			$connection = PDOConnection::connect();
+			$query = 'update usuario set pass=:password where id_usuario=:id';
+			$stmt = $connection->prepare($query);
+    		$stmt->bindParam(':id', $this->id);
+    		$stmt->bindParam(':password', $hash_password);
+			return $stmt->execute();
+    	} catch (\Exception $e) {
+    		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+    	}
+	}
 }

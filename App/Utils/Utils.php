@@ -36,3 +36,14 @@ function compare_dates($fd, $sd) {
 	}
 	return $first_date_julian - $second_date_julian;
 }
+
+/**
+ * password_generate
+ * Genera un password aleatorio utilizando letras y números.
+ *
+ * @param   int    $length
+ * @return  string $password
+ */
+function password_generate(int $length = 8) {
+    return substr(str_shuffle('1234567890abcdefghijklmnopqrstuvwxyz'), 0, $length);
+}

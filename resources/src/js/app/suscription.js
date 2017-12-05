@@ -44,7 +44,6 @@ formSuscription.addEventListener('submit', e => {
 				expirationYear: expirationYear.value
 			}
 		}).then(response => {
-			console.log(response);
 			if (response) {
 				message.className = '';
 
@@ -61,6 +60,6 @@ formSuscription.addEventListener('submit', e => {
 				securityCode.nextElementSibling.innerHTML = response.securityCode;
 				expirationDateError.innerHTML = response.expirationDate;
 			}
-		}).catch(error => console.log(error));
+		}).catch(error => {});
 	}, 2000);
 });

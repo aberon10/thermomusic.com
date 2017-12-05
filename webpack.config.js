@@ -11,7 +11,9 @@ module.exports = {
 	entry: {
 		app: './resources/src/js/index.js',
 		suscription: './resources/src/js/app/suscription.js',
-		animations: './resources/src/js/app/web-animations.js'
+		animations: './resources/src/js/app/web-animations.js',
+		support: './resources/src/js/app/support.js',
+		forgotpassword: './resources/src/js/app/forgotpassword.js'
 	},
 	output: {
 		path: path.resolve(__dirname, 'public/js'),

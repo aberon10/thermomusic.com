@@ -71,3 +71,30 @@ function get_template_suscription($name, $link) {
 				</footer>
 			</section>";
 }
+
+function get_template_support($name, $email, $message) {
+	return "<section class='main-container'>
+				<p>Mensaje enviado por <b>".$name."</b> correo: $email, desde el formulario de contacto de la web <i>thermomusic.com</i></p>
+				<p>Mensaje:</p>
+				<p>".$message."</p>
+				<footer class='footer'>
+					<p>". getenv('APP_NAME') ." © 2016 - ".date('Y')."</p>
+				</footer>
+			</section>";
+}
+
+function get_template_reset_password($user, $password) {
+	return "<section class='main-container'>
+				<p>Hola, <b>".$user."</b></p>
+				<p>Tu solicitud de contraseña ha sido satisfactoria.</p>
+				<p>La nueva contraseña es: <b>".$password."</b></p>
+				<p>Es importante que cambies tu contraseña la proxima vez que inicies sesión.</p>
+				<div class='signature'>
+					<p>Si tienes alguna duda, contacta a nuestro equipo de soporte o responde a este mismo correo.</p>
+					<p>Gracias, El equipo de Thermomusic.</p>
+				</div>
+				<footer class='footer'>
+					<p>". getenv('APP_NAME') ." © 2016 - ".date('Y')."</p>
+				</footer>
+				</section>";
+}

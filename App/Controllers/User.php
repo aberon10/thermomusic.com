@@ -18,11 +18,13 @@ use \App\Libs\Sanitize;
 use \App\Libs\ValidateCreditCard;
 use function \App\Utils\days_in_month;
 use function \App\Utils\compare_dates;
+use function \App\Utils\password_generate;
 use function \App\Libs\get_template_head;
 use function \App\Libs\get_template_header;
 use function \App\Libs\get_template_footer;
 use function \App\Libs\get_template_welcome;
 use function \App\Libs\get_template_suscription;
+use function \App\Libs\get_template_reset_password;
 
 class User extends Controller
 {
@@ -512,6 +514,86 @@ class User extends Controller
 						$response['success'] = false;
 					}
 				}
+			}
+
+			echo json_encode($response, JSON_FORCE_OBJECT);
+			exit();
+		}
+
+		\App\Controllers\Error::error_404();
+	}
+
+	public static function forgotpassword() {
+		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+			try {
+				View::setData('title', getenv('APP_NAME').' | Solicitud de contraseña');
+				View::render('sections/forgotpassword');
+				exit();
+			} catch (\Exception $e) {
+				exit($e->getMessage());
+			}
+		} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			header('Content-Type: application/json;charset=UTF-8');
+			$data = json_decode(file_get_contents('php://input'), true);
+			$response = array(
+				'success' => false,
+				'msg' => '',
+				'user' => ''
+			);
+
+			if (!empty($data['user'])) {
+				$user = new \App\Models\User;
+				$user->user = $data['user'];
+				$data_user = $user->get_user_by_name();
+				if ( $data_user != false && $data_user['id_google'] == null && $data_user['id_facebook'] == null) {
+					$reset_password = new \App\Models\ResetPassword;
+					$reset_password->id_user = $data_user['id_usuario'];
+					$data_of_last_reset = $reset_password->get_date_of_last_reset();
+					$difference_of_days = null;
+
+					if ($data_of_last_reset != false) {
+						$date = getdate();
+						$datetime1 = date_create($date['year'].'-'.$date['mon'].'-'.$date['mday'].' '.$date['hours'].':'.$date['minutes'].':'.$date['seconds']);
+						$datetime2 = date_create($data_of_last_reset['created_at']);
+						$difference_of_days = date_diff($datetime1, $datetime2)->format('%a');
+					}
+
+					if ($difference_of_days != null && $difference_of_days <= 1) {
+						$response['msg'] = 'El usuario ya solicito una contraseña.';
+					} else {
+						$reset_password->save();
+						// genero el nuevo password
+						$user->password = password_generate();
+						$user->id = $data_user['id_usuario'];
+						if ($user->reset_password()) {
+							// envio el correo
+							$to = $data_user['correo'];
+							$name = !empty($data_user['nombre']) ? $data_user['nombre'] : $data_user['usuario'];
+							$subject = 'Reset Password';
+							$alt_message = 'Solicitud de contraseña';
+
+							$content_head = get_template_head();
+							$content_header = get_template_header();
+							$content_body = get_template_reset_password($data_user['usuario'], $user->password);
+							$content_footer = get_template_footer();
+							$content = $content_head.$content_header.$content_body.$content_footer;
+
+							$mail = new \App\Libs\Mail($to, $name, $subject, $content, $alt_message);
+
+							if (!$mail->send()) {
+								$response['message'] = 'Lo sentimos, ocurrio un error. Contacta a nuestro equipo de soporte para más ayuda.';
+								$response['success'] = false;
+							} else {
+								$response['msg'] = 'Mensaje enviado con éxito. A la brevedad recibiras un correo con la nueva contraseña. Gracias!';
+								$response['success'] = true;
+							}
+						}
+					}
+				} else {
+					$response['user'] = 'La cuenta ingresada no existe';
+				}
+			} else {
+				$response['user'] = 'Campo requerido';
 			}
 
 			echo json_encode($response, JSON_FORCE_OBJECT);
