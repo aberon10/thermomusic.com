@@ -250,6 +250,7 @@ class User extends Controller
 							// create session user
 							Session::destroy();
 							Session::set('username', trim(strtolower($_POST['username'])));
+							Session::set('social_account', false);
 							Session::set('src_img', getenv('APP_URL').'/'.$src_img);
 							Session::set('timeout', time());
 							Session::regenerateSession(true);
@@ -329,6 +330,7 @@ class User extends Controller
 			Session::destroy();
 			Session::set('username', $username);
 			Session::set('src_img', $data_user['picture']['url']);
+			Session::set('social_account', true);
 			Session::set('timeout', time());
 			Session::regenerateSession(true);
 
@@ -376,6 +378,7 @@ class User extends Controller
 			Session::destroy();
 			Session::set('username', $data_user['email']);
 			Session::set('src_img', $data_user['picture']);
+			Session::set('social_account', true);
 			Session::set('timeout', time());
 			Session::regenerateSession(true);
 
@@ -600,6 +603,184 @@ class User extends Controller
 			exit();
 		}
 
+		\App\Controllers\Error::error_404();
+	}
+
+	public static function preferences() {
+		parent::checkStatus();
+
+		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+			$user = new \App\Models\User;
+			$user->user = Session::get('username');
+			$data = $user->get_user_by_name();
+
+			FlashValue::set('error_update', true);
+			FlashValue::set('error_change_password', true);
+			FlashValue::set('error_change_image', true);
+			FlashValue::set('error_cancel_suscription', true);
+			FlashValue::set('value_name', $data['nombre']);
+			FlashValue::set('value_lastname', $data['apellido']);
+			FlashValue::set('value_email', $data['correo']);
+			FlashValue::set('value_sex', $data['sexo']);
+			FlashValue::set('value_birthdate', $data['fecha_nac']);
+
+			View::setData('title', getenv('APP_NAME') . ' | Preferencias');
+			View::render('sections/preferences');
+
+		} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$error_name = Validate::resolver(trim($_POST['name']), [
+				'max_length' => [60, 'Utilizá como máximo 60 caracteres']
+			]);
+
+			$error_lastname = Validate::resolver(trim($_POST['lastname']), [
+				'max_length' => [60, 'Utilizá como máximo 60 caracteres']
+			]);
+
+			$error_date = Validate::resolver(
+				trim($_POST['day']).'-'.trim($_POST['month']).'-'.trim($_POST['year']),
+				array(
+					'require' => 'Campo obligatorio',
+					'date' => 'La fecha no es valida',
+				)
+			);
+
+			$error_email = Validate::resolver(
+				trim($_POST['email']),
+				array(
+					'require' => 'Campo obligatorio',
+					'email' => 'El correo ingresado no es valido',
+				)
+			);
+
+			$error_sex = empty($_POST['sex']) ? 'Campo obligatorio.' : true;
+
+			FlashValue::set('value_name', $_POST['name']);
+			FlashValue::set('value_sex', $_POST['sex']);
+			FlashValue::set('value_lastname', $_POST['lastname']);
+			FlashValue::set('value_email', $_POST['email']);
+			FlashValue::set('value_birthdate', trim($_POST['year']).'-'.trim($_POST['month']).'-'.trim($_POST['day']));
+			FlashValue::set('error_name', $error_name);
+			FlashValue::set('error_lastname', $error_lastname);
+			FlashValue::set('error_email', $error_email);
+			FlashValue::set('error_sex', $error_sex);
+			FlashValue::set('error_birthdate', $error_date);
+			FlashValue::set('error_update', true);
+
+
+			if ($error_name === true && $error_lastname === true && $error_email === true &&
+				$error_sex === true && $error_date === true) {
+
+				$user = new \App\Models\User;
+				$user->user = Session::get('username');
+				$user->name = trim($_POST['name']);
+				$user->lastname = trim($_POST['lastname']);
+				$user->email = trim($_POST['email']);
+				$user->sex = trim($_POST['sex']);
+				$user->birthdate = trim($_POST['year']).'-'.trim($_POST['month']).'-'.trim($_POST['day']);
+
+				if ($user->update()) {
+					FlashValue::set('error_update', false);
+					FlashValue::delete('error_name');
+					FlashValue::delete('error_lastname');
+					FlashValue::delete('error_email');
+					FlashValue::delete('error_sex');
+					FlashValue::delete('error_birthdate');
+				}
+			}
+
+			View::setData('title', getenv('APP_NAME') . ' | Preferencias');
+			View::render('sections/preferences');
+
+		} else {
+			\App\Controllers\Error::error_404();
+		}
+	}
+
+	public static function changePassword() {
+		parent::checkStatus();
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$user = new \App\Models\User;
+			$user->user = Session::get('username');
+			$user->password = trim($_POST['password']);
+
+			$new_password = trim($_POST['new-password']);
+			$confirm_password = trim($_POST['repeat-password']);
+
+			$error_password = true;
+
+			// check password
+			if (!$id_user = $user->login()) {
+				$error_password = 'La contraseña no es valida.';
+			}
+
+			$error_new_password = Validate::resolver(
+				$new_password,
+				array(
+					'require' => 'Campo Obligatorio',
+					'min_length' => [8, 'Utilizá como mínimo 8 caracteres'],
+					'max_length' => [30, 'Utilizá como máximo 30 caracteres'],
+				)
+			);
+
+			$error_confirm_password = false;
+
+			if (empty($confirm_password)) {
+				$error_confirm_password = 'Campo obligatorio';
+			} else if ($confirm_password !== $new_password) {
+				$error_confirm_password = 'Las contraseñas con coinciden';
+			}
+			FlashValue::set('error_password', $error_password);
+			FlashValue::set('error_new_password', $error_new_password);
+			FlashValue::set('error_confirm_password', $error_confirm_password);
+			FlashValue::set('error_change_password', true);
+
+			if ($error_password === true && $error_new_password === true && $error_confirm_password === false) {
+				$user->id = $id_user;
+				$user->password = $new_password;
+				if ($user->reset_password()) {
+					FlashValue::set('error_change_password', false);
+					FlashValue::delete('error_password');
+					FlashValue::delete('error_new_password');
+					FlashValue::delete('error_confirm_password');
+				}
+			}
+
+			View::setData('title', getenv('APP_NAME') . ' | Preferencias');
+			View::render('sections/preferences');
+		} else {
+			\App\Controllers\Error::error_404();
+		}
+	}
+
+	public static function cancelSuscription() {
+		parent::checkStatus();
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$user = new Models\User;
+			$user->user = Session::get('username');
+			$user->password = trim($_POST['pass']);
+
+			FlashValue::set('error_pass', 'La contraseña no es valida.');
+
+			if ($id_user = $user->login()) {
+				$user->id = $id_user;
+				$user->id_type_user = \Config\USER_FREE;
+
+				if ($user->update_account()) {
+					FlashValue::set('error_cancel_suscription', false);
+					FlashValue::delete('error_pass');
+					Session::set('account', \Config\USER_FREE);
+
+					$adv = new Advertising;
+					$adv->type_advertising = Config\ADV_IMAGE;
+					Session::set('adv', $adv->get());
+				}
+			}
+
+			header('Location: /user/preferences');
+			exit;
+		}
 		\App\Controllers\Error::error_404();
 	}
 }

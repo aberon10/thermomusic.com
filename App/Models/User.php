@@ -188,4 +188,21 @@ class User
     		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
     	}
 	}
+
+	public function update() {
+		try {
+			$connection = PDOConnection::connect();
+			$query = 'update usuario set nombre=:name, apellido=:lastname, sexo=:sex, fecha_nac=:birthdate, correo=:email where usuario=:user';
+			$stmt = $connection->prepare($query);
+    		$stmt->bindParam(':user', $this->user);
+    		$stmt->bindParam(':name', $this->name);
+    		$stmt->bindParam(':lastname', $this->lastname);
+    		$stmt->bindParam(':sex', $this->sex);
+    		$stmt->bindParam(':birthdate', $this->birthdate);
+    		$stmt->bindParam(':email', $this->email);
+			return $stmt->execute();
+    	} catch (\PDOException $e) {
+    		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+    	}
+	}
 }

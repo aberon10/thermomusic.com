@@ -6,7 +6,7 @@
 				<i class="icon-bars  no-block"></i>
 			</div>
 			<div class="nav-bar__session-info  group">
-				<a href="#"><i class="icon-user" id="menu-bars"></i> <?php echo \App\Libs\Session::get('username'); ?></a>
+				<a href="/user/preferences" target="_blanck"><i class="icon-user" id="menu-bars"></i> <?php echo \App\Libs\Session::get('username'); ?></a>
 			</div>
 			<div class="nav-bar__search  group">
 				<a href="#">Buscar</a><i class="icon-search"></i>
@@ -43,8 +43,8 @@
 					<li class="nav-list__item"><a href="#">Artista #2</a></li>
 					<li class="nav-list__item"><a href="#">Artista #3</a></li>
 					<li class="nav-list__item"><a href="#">Artista #4</a></li>
-				</ul>			
+				</ul>
 			</div>
-		</div>		
+		</div>
 	</nav>
 </div>

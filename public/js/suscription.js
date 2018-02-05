@@ -71,7 +71,7 @@
 "use strict";
 
 
-var _Ajax = __webpack_require__(9);
+var _Ajax = __webpack_require__(7);
 
 var _Ajax2 = _interopRequireDefault(_Ajax);
 
@@ -141,7 +141,7 @@ formSuscription.addEventListener('submit', function (e) {
 
 /***/ }),
 
-/***/ 9:
+/***/ 7:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

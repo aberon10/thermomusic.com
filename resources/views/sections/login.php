@@ -1,11 +1,11 @@
-<?php 
+<?php
 require VIEWS_PATH.'layouts/head.php';
 \App\Libs\Session::set('csrf', \App\Libs\CsrfToken::create());
 ?>
 <body id="cover-image-login">
 	 <div class="ed-container  no-padding  main-wrapper">
         <div class="ed-item   full  no-padding">
-            <?php require VIEWS_PATH.'layouts/header-secondary.php'; ?>			
+            <?php require VIEWS_PATH.'layouts/header-secondary.php'; ?>
             <div class="index-wrapper">
             	<div class="index-wrapper__left">
             		<div class="index-headings">
@@ -50,13 +50,13 @@ require VIEWS_PATH.'layouts/head.php';
 	            			<div class="input-group">
 	            				<a href="<?php echo $fb_url ?? '#'; ?>" class="social-button-login  button  bg-facebook" id="btn-login-facebook">
 	            				<i class="icon-facebook"></i><span>Facebook</span></a>
-	            				<a href="<?php echo $google_url ?? '#'; ?>" class="social-button-login  button  bg-google" id="btn-login-google"> 
+	            				<a href="<?php echo $google_url ?? '#'; ?>" class="social-button-login  button  bg-google" id="btn-login-google">
 	            				<i class="icon-google-plus"></i><span>Google+</span></a>
 	            			</div>
 	            		<?php endif; ?>
 	            			<?php require VIEWS_PATH.'layouts/form-login.php'; ?>
 	            		</div>
-	            	</div>						
+	            	</div>
 				</div>
             </div>
         </div>

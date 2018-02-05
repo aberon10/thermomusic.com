@@ -56,10 +56,7 @@
                                         </div>
 										<div class="input-group">
 											<div class="credits-cards">
-												<img class="credit-card" src="/images/cards/visa-mastercard-american-express.png" alt="visa-mastercard-american-express.png">
-												<img class="credit-card" src="/images/cards/discover.jpg" alt="discover.jpg">
-												<img class="credit-card" src="/images/cards/dinners.jpg" alt="dinners.jpg">
-												<img class="credit-card" src="/images/cards/jcb.jpg" alt="jcb.jpg">
+												<img class="credit-card" src="/images/cards/cards.png" alt="cards.png">
 											</div>
 										</div>
                                         <div class="input-group">

@@ -59,9 +59,9 @@ class NavBarHeader extends React.Component {
 					</div>
 				</div>
 				<div className="nav-bar__session-info  group">
-					<Link to="/user/account" className="center">
+					<a href="/user/preferences" className="center" target="_blank">
 						{avatar} <p>{substr(this.state.currentUser, 28)}</p>
-					</Link>
+					</a>
 				</div>
 				<div className="nav-bar__search  group">
 					<a href="#" onClick={openFinder}>Buscar</a>

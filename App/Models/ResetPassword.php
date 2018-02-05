@@ -30,7 +30,7 @@ class ResetPassword {
 	public function get_date_of_last_reset() {
 		try {
 			$connection = PDOConnection::connect();
-			$query = 'select id_reset, id_usuario, created_at from password_resets where id_usuario=:id_user';
+			$query = 'select id_reset, id_usuario, created_at from password_resets where id_usuario=:id_user ORDER BY created_at DESC';
 			$stmt = $connection->prepare($query);
     		$stmt->bindParam(':id_user', $this->id_user);
 			$stmt->execute();

@@ -71,7 +71,7 @@
 "use strict";
 
 
-var _Ajax = __webpack_require__(9);
+var _Ajax = __webpack_require__(7);
 
 var _Ajax2 = _interopRequireDefault(_Ajax);
 
@@ -115,7 +115,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
 /***/ }),
 
-/***/ 9:
+/***/ 7:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
