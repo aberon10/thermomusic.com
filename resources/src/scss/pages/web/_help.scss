@@ -1,0 +1,143 @@
+// SECCIÓN DE AYUDA
+.container-article {
+    margin: 60px auto;
+}
+
+// ARTICULOS
+.article {
+    margin: 0 auto 20px;
+    padding: 10px 40px;
+
+    font-size: 1.2em;
+
+    @include from(tablet) {
+        margin: 0 20px;
+    }
+    @include from(web) {
+        margin: 0 10px;
+    }
+
+    &__title {
+        margin-bottom: 20px;
+
+        border-bottom: 1px solid $light-gray;
+        h2 {
+            position: relative;
+
+            display: inline-block;
+        }
+
+        span {
+            color: $light-gray;
+
+            font-size: 0.8em;
+        }
+    }
+
+    &__content {
+        &.columns-2 {
+            @include grid(div, 1);
+            @include from(1200px) {
+                @include grid(div, 2);
+            }
+        }
+	}
+
+	ol, ul {
+		list-style: none;
+	}
+}
+
+// SIDEBAR MENÚ
+.aside {
+    margin: 40px auto 0;
+
+    border: 1px solid #CCC;
+
+    @include from(tablet) {
+        margin: 40px 20px 0;
+    }
+    @include from(web) {
+        margin: 60px 10px;
+    }
+    @include from(1200px) {
+        margin: 60px 0 60px 0;
+    }
+}
+
+.sidebar {
+
+    &__header {
+        padding: 10px;
+
+        background: $light-blue;
+        h2 {
+            color: #FFF;
+            text-transform: capitalize;
+        }
+    }
+
+    &__menu {
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            display: block;
+
+            padding: 8px;
+			text-align: left;
+            &.active {
+                text-decoration: underline;
+                color: $link--color;
+            }
+        }
+
+        // icon
+        i {
+            margin-right: 0.2em;
+        }
+
+        li,
+        li > a {
+            color: #444444;
+			text-align: left;
+            font-size: 1rem;
+        }
+
+
+        p[data-menu="sidebar-menu-item"] {
+			font-size: 1.2rem;
+			color: $black;
+        }
+
+    }
+
+    &__submenu {
+        display: none;
+
+        &.show {
+            display: block;
+        }
+
+        li {
+            padding-left: 2em;
+
+            a {
+                padding-left: 0;
+
+                color: #555555;
+
+                &:active,
+                &:focus,
+                &:hover {
+                    text-decoration: underline;
+
+                    color: darken($link--color, 8%);
+                }
+            }
+        }
+
+    }
+}
