@@ -1,0 +1,67 @@
+.content {
+    min-height: 100vh;
+    width: 100%;
+    background: #FFF url("../images/cover-images/cover-image-home.jpg");
+    background-clip: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .message-error {
+        h1,
+        h3,
+        p {
+            font-size: 8vw;
+            text-align: center;
+            color: #FFF;
+        }
+        h3 {
+            font-size: 6vw;
+        }
+        p {
+            font-size: 4vw;
+        }
+    }
+    @include from(tablet) {
+        .message-error {
+            h1,
+            h3,
+            p {
+                font-size: 4vw;
+                text-align: center;
+                color: #FFF;
+            }
+            h3 {
+                font-size: 2vw;
+            }
+            p {
+                font-size: 2vw;
+            }
+        }
+    }
+}
+
+.content-menu {
+    max-width: 100%;
+    width: 100%;
+    list-style: none;
+    @include from(tablet) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    li {
+        position: relative;
+        overflow: hidden;
+        padding: 1rem;
+    }
+    a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        color: $light-blue;
+        text-align: center;
+        text-transform: uppercase;
+    }
+}

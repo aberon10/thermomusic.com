@@ -11,9 +11,9 @@ class Error extends Controller
 		try {
 			header('Content-Type: text/html;charset=utf8');
         	header('HTTP/1.0 404 Not Found');
-        	
-			View::setData('message', 'Prueba');
-			View::render('errors/404');	
+
+			View::setData('title', '404 Not Found');
+			View::render('errors/404');
 		} catch (\Exception $e) {
 			exit($e->getMessage());
 		}
