@@ -6,12 +6,12 @@
                     <div class="cover-image__message  advertising-message">
                         <h1>La música de estos y muchos otros artistas te esperan, registrate ahora!</h1>
                         <div class="buttons-group">
-                            <a href="/home/offers" class="button  button-cyan  button-big">Inciar 60 días de prueba</a>
-                            <a href="/profile/demo" class="button  button-black  button-big" id="demo">Probar Demo</a>
+							<a href="/home/offers" class="button  button-cyan  button-big">Inciar 60 días de prueba</a>
+							<a href="/user/demo" class="button  button-black  button-big" id="demo">Probar Demo</a>
+							<form method="POST" action="/profile/demo" id="form-demo" name="form-demo">
+								<input type="hidden" name="_demo" value="_demo">
+							</form>
                         </div>
-                        <form method="POST" action="/profile/demo" id="form-demo" name="form-demo">
-                            <input type="hidden" name="_demo" value="_demo">
-                        </form>
                     </div>
                 </div>
                 <?php endif; ?>

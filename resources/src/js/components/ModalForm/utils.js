@@ -7,7 +7,7 @@ import Ajax from '../../Libs/Ajax';
 
 import AppPlaylist from '../../app/Music/Playlist';
 import MenuPopUp from '../MenuPopUp/index';
-import { displayNotification } from '../../app/utils/Utils';
+import { displayNotification, checkXMLHTTPResponse } from '../../app/utils/Utils';
 
 function addTrackToFavorites(e) {
 	let target = e.target;
@@ -20,6 +20,7 @@ function addTrackToFavorites(e) {
 		responseType: 'json',
 		data: { id: e.target.dataset.id }
 	}).then((response) => {
+		checkXMLHTTPResponse(response);
 		if (response.success) {
 			if (target.classList.contains('color-red')) {
 				target.classList.remove('color-red');

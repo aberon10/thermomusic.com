@@ -10,7 +10,7 @@ import {
 	removeClassModal,
 	addClassModal
 } from '../../components/ModalForm/utils';
-import { displayNotification, stringFromCharCode } from '../utils/Utils';
+import { displayNotification, stringFromCharCode, checkXMLHTTPResponse } from '../utils/Utils';
 
 import { substr } from '../../components/utils';
 
@@ -25,6 +25,7 @@ export default class AppPlaylist {
 			responseType: 'json',
 			data: data,
 		}).then((response) => {
+			checkXMLHTTPResponse(response);
 			if (response.success) {
 				if (location.pathname === '/music') {
 					Playlist.updateState();
@@ -68,6 +69,7 @@ export default class AppPlaylist {
 			responseType: 'json',
 			data: {idPlaylist: idPlaylist, idTrack: idTrack}
 		}).then((response) => {
+			checkXMLHTTPResponse(response);
 			if (response.success) {
 				if (/^(\/playlist\/index)\/[0-9]+$/.test(location.pathname))
 					Playlist.updateState();
@@ -88,6 +90,7 @@ export default class AppPlaylist {
 			responseType: 'json',
 			data: '',
 		}).then((response) => {
+			checkXMLHTTPResponse(response);
 			AppPlaylist.list(response);
 		}).catch((error) => {});
 	}
@@ -152,6 +155,7 @@ export default class AppPlaylist {
 			responseType: 'json',
 			data: {id: data.id}
 		}).then((response) => {
+			checkXMLHTTPResponse(response);
 			removeClassModal(document.getElementById('modal-dialog'));
 			displayNotification(response.message);
 			Playlist.updateState();
@@ -168,6 +172,7 @@ export default class AppPlaylist {
 			responseType: 'json',
 			data: { idTrack: idTrack, idPlaylist: idPlaylist }
 		}).then((response) => {
+			checkXMLHTTPResponse(response);
 			let element = document.querySelector(`.tracklist-item[data-track='${dataJSON}']`);
 			let parent = element.parentNode;
 			parent.removeChild(element);

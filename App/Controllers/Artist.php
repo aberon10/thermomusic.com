@@ -70,7 +70,7 @@ class Artist extends Controller
 			header('Content-Type: application/json;charset=utf8');
 			$data = (array) json_decode(file_get_contents('php://input'));
 
-			// parent::checkStatus($data);
+			parent::checkStatus($data);
 
 			$response = array(
 				'data' => null,

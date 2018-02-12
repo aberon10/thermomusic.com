@@ -8,7 +8,7 @@ import inFavorites from '../Explorer/components/util';
 import ContentSpacing from '../../components/Containers/ContentSpacing';
 import MainContent from '../../components/Main/index';
 import TrackList from '../components/TrackList';
-
+import { checkXMLHTTPResponse } from '../../app/utils/Utils';
 class Top extends React.Component {
 	constructor(props) {
 		super(props);
@@ -26,6 +26,7 @@ class Top extends React.Component {
 			responseType: 'json',
 			data: null
 		}).then((response) => {
+			checkXMLHTTPResponse(response);
 			this.setState({
 				element: Top.createContent(response)
 			});

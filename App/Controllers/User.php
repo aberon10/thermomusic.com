@@ -395,6 +395,13 @@ class User extends Controller
 			if (isset($_POST['csrf']) &&
 				CsrfToken::isEqual(Session::get('csrf'), $_POST['csrf']) &&
 				Session::has('username')) {
+
+                if (Session::get('account') == Config\USER_NO_REGISTER) {
+					$user = new \App\Models\User;
+					$user->id = Session::get('id_user_demo');
+					$user->deleteAccount();
+				}
+
 				Session::destroy();
 				header('location: /home/login');
 				exit();
@@ -782,5 +789,30 @@ class User extends Controller
 			exit;
 		}
 		\App\Controllers\Error::error_404();
+	}
+
+	public static function demo() {
+		if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+			$username = 'demo_' . bin2hex(random_bytes(8));
+			$user = new \App\Models\User;
+			$user->user = $username;
+			$user->id_type_user = Config\USER_NO_REGISTER;
+			$user->sex = NULL;
+			$user->birthdate = NULL;
+			$user->name = NULL;
+			$user->lastname = NULL;
+			$user->id_google = NULL;
+			$user->id_facebook = NULL;
+
+			if ($id_user = $user->createAccount()) {
+				// Creo la sesión
+				Session::set('username', $username);
+				Session::set('id_user_demo', $id_user);
+				header('Location: /user/index');
+				exit;
+			}
+		}
+		\App\Controllers\Error::error_404();
+
 	}
 }

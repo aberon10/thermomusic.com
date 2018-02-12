@@ -5,7 +5,7 @@ require VIEWS_PATH . 'layouts/head.php';
 <body>
 	<div class="ed-container  no-padding  main-container">
         <div class="ed-item   full  no-padding">
-			<?php if (!\App\Libs\Session::get('social_account')): ?>
+			<?php if (!\App\Libs\Session::get('social_account') && \App\Libs\Session::get('account') != \Config\USER_NO_REGISTER): ?>
 			<div class="panel">
 				<div class="panel-header">
 					<h2 class="panel-header__title">Preferencias</h2>
@@ -159,10 +159,15 @@ require VIEWS_PATH . 'layouts/head.php';
 							<p></p>
 							<button type="submit" class="button  button-red  button-big  block  center">Cancelar Suscripción</button>
 						</div>
+					</form>
 					</div>
 					<?php else: ?>
 					<a href="/home/offers" class="button  button-cyan  button-big  block  center">Contratar Premium</a>
 					<?php endif; ?>
+					<form action="/user/logout" method="POST">
+						<input type="hidden" name="csrf" value="<?php echo \App\Libs\Session::get('csrf'); ?>">
+						<button type="submit" class="button  button-gray">Cerrar sesión <i class="icon-sign-out"></i></button>
+					</form>
 				</div>
 			</div>
 		</div>

@@ -10,6 +10,8 @@ import ContentSpacing from '../../components/Containers/ContentSpacing';
 import TrackList from '../../sections/components/TrackList';
 import Notification from '../../components/Notification/index';
 
+import { checkXMLHTTPResponse } from '../../app/utils/Utils';
+
 export default class Favorites extends React.Component {
 	constructor(props) {
 		super(props);
@@ -27,6 +29,7 @@ export default class Favorites extends React.Component {
 			responseType: 'json',
 			data: null
 		}).then((response) => {
+			checkXMLHTTPResponse(response);
 			this.setState({
 				element: this.loadData(response)
 			});

@@ -13,7 +13,7 @@ import Genres from './components/Genres';
 import Artists from './components/Artists';
 import Artist from './components/Artist';
 import Album from './components/Album';
-
+import { checkXMLHTTPResponse } from '../../app/utils/Utils';
 class Explorer extends React.Component {
 	constructor(props) {
 		super(props);
@@ -57,6 +57,7 @@ class Explorer extends React.Component {
 
 		Ajax.post(dataRequest)
 			.then((response) => {
+				checkXMLHTTPResponse(response);
 				this._loadData(response);
 			}).catch((error) => {});
 	}

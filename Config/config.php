@@ -10,8 +10,6 @@ namespace Config;
  * @version 1.0
  */
 
-const PRODUCTION = false;
-
 // Estableze la zona horaria
 date_default_timezone_set('America/Montevideo');
 
@@ -25,10 +23,10 @@ header('Content-Type: text/html; charset=UTF-8');
  * IMPORTANT!!!
  * Por defecto el despliegue de errores esta habilitado,
  * es recomendado utilizarlo solo en fases de 'Desarrollo' y 'Testing'.
- * Cambiar el valor de la constante PRODUCTION a `true` cuando la aplicación vaya a ser
+ * Cambiar el valor de la variable de entorno PRODUCTION a `true` cuando la aplicación vaya a ser
  * desplegada en producción.
  */
-if (!PRODUCTION) {
+if (!getenv('APP_PRODUCTION')) {
 	ini_set('display_errors', '1');
 	error_reporting(E_ALL);
 } else {

@@ -9,7 +9,7 @@ import Ajax from '../../Libs/Ajax';
 import ContentSpacing from '../../components/Containers/ContentSpacing';
 import CoverArtist from '../../components/Containers/CoverArtist';
 import MainContent from '../../components/Main';
-import { stringFromCharCode } from '../../app/utils/Utils';
+import { stringFromCharCode, checkXMLHTTPResponse } from '../../app/utils/Utils';
 
 export default class Music extends React.Component {
 	constructor(props) {
@@ -34,6 +34,7 @@ export default class Music extends React.Component {
 			responseType: 'json',
 			data: '',
 		}).then((response) => {
+			checkXMLHTTPResponse(response);
 			this._loadData(response);
 		}).catch((error) => {
 			//console.log(error);

@@ -205,4 +205,17 @@ class User
     		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
     	}
 	}
+
+	public function deleteAccount() {
+		try {
+			$connection = PDOConnection::connect();
+			$query = 'delete from usuario where id_usuario=:id';
+			$stmt = $connection->prepare($query);
+			return $stmt->execute(array(
+				':id' => $this->id
+			));
+    	} catch (\PDOException $e) {
+    		echo '[ ERROR ] Message: '.$e->getMessage().' Code: '.$e->getCode();
+    	}
+	}
 }

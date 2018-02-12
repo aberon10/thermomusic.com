@@ -86,10 +86,17 @@ function removeSessionItem(item) {
 	}
 }
 
+function checkXMLHTTPResponse(response) {
+	if (response.hasOwnProperty('status') && response.status === 401) {
+		window.location.href = response.urlRedirect;
+	}
+}
+
 export {
 	timeFormat,
 	totalTimeInStringFormat,
 	displayNotification,
 	removeSessionItem,
-	stringFromCharCode
+	stringFromCharCode,
+	checkXMLHTTPResponse
 };

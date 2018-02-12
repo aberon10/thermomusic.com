@@ -120,7 +120,8 @@ class Ajax {
 
 		// open request
 		http.open(request.method, request.url, true);
-
+		http.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		http.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 		if (request.data) {
 			if (request.method === 'POST') {
 				if (request.data.constructor === Object) {
